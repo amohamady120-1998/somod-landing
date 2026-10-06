@@ -316,7 +316,7 @@ html[dir="ltr"] .step-line{left:-50%}
 /* ===== Contact modal ===== */
 .cm-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility 0s linear .25s}
 .cm-overlay.open{opacity:1;visibility:visible;transition:opacity .25s ease}
-.cm-box{position:relative;width:100%;max-width:480px;max-height:calc(100vh - 32px);overflow-y:auto;background:#121a2a;border:1px solid rgba(0,167,111,0.3);border-radius:20px;padding:28px 26px 24px;box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(0,167,111,0.06);transform:translateY(12px) scale(.96);opacity:0;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.cm-box{position:relative;width:100%;max-width:480px;max-height:calc(100vh - 32px);overflow-x:hidden;overflow-y:auto;background:#121a2a;border:1px solid rgba(0,167,111,0.3);border-radius:20px;padding:28px 26px 24px;box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(0,167,111,0.06);transform:translateY(12px) scale(.96);opacity:0;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s}
 .cm-overlay.open .cm-box{transform:none;opacity:1}
 .cm-close{position:absolute;top:14px;inset-inline-end:14px;width:32px;height:32px;border-radius:9px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--muted);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .15s,background .15s}
 .cm-close:hover{color:#fff;background:rgba(255,255,255,0.08)}
@@ -343,7 +343,7 @@ textarea.cm-input{resize:vertical;min-height:84px}
 .cm-status.ok{display:block;background:rgba(0,167,111,0.12);border:1px solid rgba(0,167,111,0.3);color:#34d399}
 .cm-status.err{display:block;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);color:#f87171}
 .cm-status a{color:inherit}
-.cm-hp{position:absolute;left:-9999px;opacity:0;pointer-events:none}
+.cm-hp{position:absolute;width:1px;height:1px;margin:0;overflow:hidden;clip-path:inset(50%);opacity:0;pointer-events:none}
 body.cm-lock{overflow:hidden}
 @media(max-width:560px){.cm-grid{grid-template-columns:1fr}.cm-box{padding:24px 18px 20px}}
 /* ===== Motion ===== */
