@@ -17,6 +17,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:80px}
 body{background:var(--bg);color:var(--text);font-family:var(--font-ar);overflow-x:hidden}
 body[dir="ltr"]{font-family:var(--font-en)}
 a{text-decoration:none;color:inherit}
@@ -296,7 +297,7 @@ html[dir="ltr"] .step-line{left:-50%}
     <p class="hero-sub reveal in d2" data-ar="منصة واحدة تربط شركتك بالملّاك والموردين — طلبات الصيانة، الضمانات، والتقارير اللحظية في مكان واحد." data-en="One platform connecting your company with owners and vendors — maintenance requests, warranties, and real-time reports in one place.">منصة واحدة تربط شركتك بالملّاك والموردين — طلبات الصيانة، الضمانات، والتقارير اللحظية في مكان واحد.</p>
     <div class="hero-ctas reveal in d3">
       <button class="btn-primary" onclick="window.location.href='https://somod-production.up.railway.app/login'"><span data-ar="اطلب عرضاً توضيحياً" data-en="Request a Demo">اطلب عرضاً توضيحياً</span> <span class="arrow">←</span></button>
-      <button class="btn-ghost"><span class="play-ic">▶</span> <span data-ar="شاهد كيف يعمل" data-en="See how it works">شاهد كيف يعمل</span></button>
+      <button class="btn-ghost" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})"><span class="play-ic">▶</span> <span data-ar="شاهد كيف يعمل" data-en="See how it works">شاهد كيف يعمل</span></button>
     </div>
     <div class="hero-note reveal in d4">
       <span class="note-item">✓ <span data-ar="تجربة مجانية" data-en="Free trial">تجربة مجانية</span></span>
