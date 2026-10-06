@@ -10,4 +10,6 @@ npm start
 
 ## النشر على Railway
 - Root Directory: /
-- Start Command: npm start
+- Start Command: npm start (معرّف في railway.json)
+
+الملفات الثابتة في `public/` فقط هي اللي بتتقدّم للمتصفح.
