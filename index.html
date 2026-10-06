@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Somod — منصة إدارة ما بعد التسليم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060910; --bg2:#0a0e1a; --card:#121a2a;
+  --accent:#00a76f; --accent2:#00d492; --accent3:#00855a;
+  --text:#ffffff; --muted:rgba(255,255,255,0.5); --faint:rgba(255,255,255,0.35);
+  --border:rgba(255,255,255,0.08);
+  --font-ar:'IBM Plex Sans Arabic',sans-serif; --font-en:'Inter',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-ar);overflow-x:hidden}
+body[dir="ltr"]{font-family:var(--font-en)}
+a{text-decoration:none;color:inherit}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* reveal animation */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}
+.reveal.d4{transition-delay:.4s}.reveal.d5{transition-delay:.5s}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;backdrop-filter:blur(12px);background:rgba(6,9,16,0.7);border-bottom:0.5px solid transparent;transition:border-color .3s}
+.nav.scrolled{border-bottom-color:var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(145deg,var(--accent2),var(--accent3));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;box-shadow:0 2px 12px rgba(0,167,111,0.4)}
+.nav-name{font-size:17px;font-weight:700;letter-spacing:-0.3px}
+.nav-links{display:flex;gap:28px}
+.nav-link{font-size:13px;color:var(--muted);cursor:pointer;transition:color .15s}
+.nav-link:hover{color:#fff}
+.nav-right{display:flex;align-items:center;gap:12px}
+.nav-lang{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);border:1px solid var(--border);padding:7px 12px;border-radius:8px;cursor:pointer;transition:all .15s;background:none;font-family:inherit}
+.nav-lang:hover{color:#fff;border-color:rgba(255,255,255,0.25)}
+.nav-cta{font-size:13px;font-weight:600;color:var(--bg);background:#fff;padding:9px 18px;border-radius:9px;cursor:pointer;transition:transform .15s;border:none;font-family:inherit}
+.nav-cta:hover{transform:translateY(-1px)}
+.nav-burger{display:none;flex-direction:column;gap:4px;cursor:pointer;background:none;border:none;padding:6px}
+.nav-burger span{width:22px;height:2px;background:#fff;border-radius:2px;transition:all .3s}
+
+/* HERO */
+.hero{padding:130px 0 0;text-align:center;position:relative;overflow:hidden}
+.mesh{position:absolute;inset:0;pointer-events:none}
+.mesh::before{content:'';position:absolute;top:-10%;left:50%;transform:translateX(-50%);width:900px;height:500px;max-width:120vw;background:radial-gradient(ellipse,rgba(0,167,111,0.18),transparent 60%);filter:blur(70px)}
+.mesh::after{content:'';position:absolute;top:35%;right:-5%;width:400px;height:400px;background:radial-gradient(circle,rgba(16,185,129,0.1),transparent 65%);filter:blur(80px)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:54px 54px;-webkit-mask-image:radial-gradient(ellipse at center top,black 10%,transparent 65%);mask-image:radial-gradient(ellipse at center top,black 10%,transparent 65%)}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(10px);padding:7px 7px 7px 16px;border-radius:30px;font-size:12px;color:rgba(255,255,255,0.75);margin-bottom:28px;position:relative;z-index:2}
+body[dir="ltr"] .hero-badge{padding:7px 16px 7px 7px}
+.badge-pill{background:var(--accent);color:#fff;font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px}
+.hero-title{font-size:clamp(32px,6vw,52px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;max-width:760px;margin:0 auto 22px;position:relative;z-index:2}
+.grad{background:linear-gradient(120deg,var(--accent2),#34d399,var(--accent));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:clamp(14px,2vw,17px);color:var(--muted);line-height:1.7;max-width:560px;margin:0 auto 36px;position:relative;z-index:2}
+.hero-ctas{display:flex;gap:13px;justify-content:center;margin-bottom:20px;position:relative;z-index:2;flex-wrap:wrap}
+.btn-primary{display:flex;align-items:center;gap:8px;background:linear-gradient(145deg,var(--accent2),var(--accent3));color:#fff;font-size:14px;font-weight:600;padding:15px 30px;border-radius:12px;cursor:pointer;box-shadow:0 10px 30px rgba(0,167,111,0.35),inset 0 1px 0 rgba(255,255,255,0.2);transition:transform .15s;border:none;font-family:inherit}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#fff;font-size:14px;font-weight:500;padding:15px 28px;border-radius:12px;cursor:pointer;backdrop-filter:blur(10px);font-family:inherit}
+.play-ic{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:8px}
+.hero-note{display:flex;align-items:center;justify-content:center;gap:18px;font-size:11px;color:var(--faint);position:relative;z-index:2;flex-wrap:wrap}
+.note-item{display:flex;align-items:center;gap:5px}
+
+/* DEMO WINDOW */
+.demo-wrap{margin:56px auto 0;max-width:800px;position:relative;z-index:2;padding:0 10px}
+.demo-reflect{position:absolute;left:0;right:0;bottom:-1px;height:80px;background:linear-gradient(to bottom,transparent,var(--bg));z-index:3;pointer-events:none}
+.win{background:linear-gradient(160deg,var(--card),#0c1320);border:1px solid rgba(255,255,255,0.1);border-radius:16px 16px 0 0;overflow:hidden;box-shadow:0 40px 100px rgba(0,167,111,0.14),0 0 0 1px rgba(255,255,255,0.03)}
+.win-bar{display:flex;align-items:center;gap:7px;padding:13px 16px;background:rgba(255,255,255,0.02);border-bottom:1px solid rgba(255,255,255,0.05)}
+.wdot{width:10px;height:10px;border-radius:50%}
+.win-url{margin:0 14px;background:rgba(255,255,255,0.04);border-radius:6px;padding:4px 14px;font-size:10px;color:var(--faint);flex:1;max-width:240px;font-family:var(--font-en)}
+.screens{position:relative;height:320px}
+.screen{position:absolute;inset:0;padding:20px;opacity:0;transform:translateY(14px);transition:opacity .6s,transform .6s;pointer-events:none}
+.screen.active{opacity:1;transform:translateY(0);pointer-events:auto}
+.sc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.sc-title{font-size:14px;font-weight:600}
+.sc-sub{font-size:10px;color:var(--faint);margin-top:2px}
+.sc-period{display:flex;gap:2px;background:rgba(255,255,255,0.05);border-radius:8px;padding:3px}
+.sc-po{font-size:10px;padding:4px 10px;border-radius:6px;color:var(--faint)}
+.sc-po.on{background:var(--accent);color:#fff}
+.sc-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.kp{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:11px;padding:12px}
+.kp-top{height:2.5px;width:28px;border-radius:2px;margin-bottom:9px}
+.kp-row{display:flex;align-items:center;justify-content:space-between}
+.kp-n{font-size:21px;font-weight:700;letter-spacing:-0.5px}
+.kp-badge{font-size:8px;padding:1px 6px;border-radius:10px;background:rgba(0,167,111,0.15);color:var(--accent2)}
+.kp-l{font-size:9px;color:var(--faint);margin-top:4px}
+.sc-charts{display:grid;grid-template-columns:1.6fr 1fr;gap:10px}
+.sc-chart{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:11px;padding:13px}
+.scc-t{font-size:9px;color:var(--muted);margin-bottom:12px}
+.sc-bars{display:flex;align-items:flex-end;gap:6px;height:66px}
+.scb{flex:1;border-radius:3px;background:rgba(245,158,11,0.5);transition:height 1s cubic-bezier(.2,.8,.2,1);height:3px}
+.scb.hl{background:var(--accent)}
+.sc-donut{display:flex;align-items:center;justify-content:center;height:66px}
+/* requests screen */
+.req-list{display:flex;flex-direction:column;gap:9px}
+.req{display:flex;align-items:center;gap:11px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:11px 13px}
+.req-ic{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.req-info{flex:1}
+.req-title{font-size:12px;font-weight:500}
+.req-sub{font-size:9px;color:var(--faint);margin-top:1px}
+.chip{font-size:9px;padding:2px 9px;border-radius:20px;font-weight:500}
+/* mobile screen */
+.m-screen{display:flex;justify-content:center;gap:24px;align-items:center;height:100%}
+.phone{width:160px;background:var(--bg2);border:2px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;flex-shrink:0}
+.ph-top{background:#0f1623;padding:11px 13px}
+.ph-greet{font-size:11px;font-weight:500}
+.ph-unit{font-size:8px;color:var(--accent2);margin-top:1px}
+.ph-body{padding:11px}
+.ph-card{background:linear-gradient(135deg,#0a2e26,#0f4438);border-radius:11px;padding:12px;margin-bottom:9px}
+.ph-cu{font-size:14px;font-weight:700}
+.ph-cl{font-size:8px;color:var(--muted);margin-top:1px}
+.ph-cta{background:var(--accent);color:#fff;font-size:9px;font-weight:600;padding:7px;border-radius:7px;text-align:center;margin-top:9px}
+.ph-req{background:rgba(255,255,255,0.04);border-radius:8px;padding:9px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center}
+.ph-rt{font-size:9px}
+.ph-nav{display:flex;background:#0f1623;padding:8px 0;justify-content:space-around;border-top:1px solid rgba(255,255,255,0.05)}
+.ph-ni{font-size:13px;color:var(--faint)}
+.ph-ni.on{color:var(--accent2)}
+.m-txt{max-width:220px}
+body[dir="ltr"] .m-txt{text-align:left}
+.m-badge{display:inline-block;font-size:10px;color:var(--accent2);background:rgba(0,167,111,0.1);border:0.5px solid rgba(0,167,111,0.25);padding:4px 12px;border-radius:20px;margin-bottom:12px}
+.m-title{font-size:18px;font-weight:700;line-height:1.3;margin-bottom:10px}
+.m-sub{font-size:12px;color:var(--muted);line-height:1.6}
+.prog{display:flex;justify-content:center;gap:7px;margin-top:20px;position:relative;z-index:4}
+.pd{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.15);transition:all .4s;cursor:pointer;border:none;padding:0}
+.pd.on{width:22px;border-radius:4px;background:var(--accent)}
+
+/* TRUST */
+.trust{padding:32px 0;border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);background:rgba(255,255,255,0.01);margin-top:20px}
+.trust-label{text-align:center;font-size:11px;color:var(--faint);margin-bottom:20px;letter-spacing:0.04em}
+.trust-logos{display:flex;justify-content:center;gap:44px;flex-wrap:wrap}
+.tlogo{font-size:16px;font-weight:700;color:rgba(255,255,255,0.28);letter-spacing:-0.3px;transition:color .2s}
+.tlogo:hover{color:rgba(255,255,255,0.5)}
+
+/* SECTION */
+.sec{padding:80px 0;position:relative;overflow:hidden}
+.sec-head{text-align:center;margin-bottom:12px}
+.sec-tag{display:inline-block;font-size:11px;font-weight:600;color:var(--accent2);background:rgba(0,167,111,0.1);border:0.5px solid rgba(0,167,111,0.25);padding:5px 14px;border-radius:20px;margin-bottom:18px}
+.sec-title{font-size:clamp(24px,4vw,34px);font-weight:800;letter-spacing:-0.8px;line-height:1.2;margin-bottom:14px}
+.sec-sub{font-size:15px;color:var(--muted);line-height:1.6;max-width:500px;margin:0 auto}
+
+/* PROBLEM */
+.prob-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+.prob{background:rgba(220,38,38,0.04);border:1px solid rgba(220,38,38,0.15);border-radius:16px;padding:24px;position:relative}
+.prob-ic{width:44px;height:44px;border-radius:12px;background:rgba(220,38,38,0.12);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
+.prob-title{font-size:15px;font-weight:600;margin-bottom:8px}
+.prob-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.prob-arrow{text-align:center;margin:36px 0;font-size:13px;color:var(--accent2);font-weight:600}
+
+/* FEATURES */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+.feat{background:linear-gradient(160deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));border:1px solid var(--border);border-radius:16px;padding:24px;position:relative;overflow:hidden;transition:transform .25s,border-color .25s}
+.feat:hover{transform:translateY(-4px);border-color:rgba(0,167,111,0.3)}
+.feat-glow{position:absolute;top:-30px;right:-30px;width:90px;height:90px;border-radius:50%;opacity:0.12;filter:blur(25px)}
+.feat-ic{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;position:relative}
+.feat-title{font-size:16px;font-weight:600;margin-bottom:9px}
+.feat-desc{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px;position:relative}
+.step{text-align:center;position:relative}
+.step-num{width:54px;height:54px;border-radius:16px;background:linear-gradient(145deg,var(--accent2),var(--accent3));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;margin:0 auto 18px;box-shadow:0 8px 24px rgba(0,167,111,0.3)}
+.step-title{font-size:16px;font-weight:600;margin-bottom:9px}
+.step-desc{font-size:12px;color:var(--muted);line-height:1.6;max-width:210px;margin:0 auto}
+.step-line{position:absolute;top:27px;width:100%;height:1px;background:linear-gradient(to left,transparent,rgba(0,167,111,0.3),transparent);z-index:0}
+html[dir="rtl"] .step-line{right:-50%}
+html[dir="ltr"] .step-line{left:-50%}
+
+/* ROLES */
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
+.role{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:18px;transition:all .2s}
+.role:hover{background:rgba(0,167,111,0.06);border-color:rgba(0,167,111,0.25);transform:translateY(-2px)}
+.role-ic{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.role-name{font-size:14px;font-weight:600}
+.role-desc{font-size:11px;color:var(--faint);margin-top:3px}
+
+/* STATS / testimonial */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:44px;padding:36px;background:linear-gradient(160deg,rgba(0,167,111,0.06),rgba(255,255,255,0.01));border:1px solid rgba(0,167,111,0.15);border-radius:20px}
+.stat{text-align:center}
+.stat-n{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-1px;background:linear-gradient(120deg,var(--accent2),#34d399);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat-l{font-size:11px;color:var(--muted);margin-top:6px}
+.testi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:20px}
+.testi{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:24px}
+.testi-stars{color:#fbbf24;font-size:13px;margin-bottom:12px;letter-spacing:2px}
+.testi-quote{font-size:14px;line-height:1.7;color:rgba(255,255,255,0.85);margin-bottom:18px}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:#fff}
+.testi-name{font-size:13px;font-weight:600}
+.testi-role{font-size:11px;color:var(--faint);margin-top:1px}
+
+/* SECURITY */
+.sec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:44px}
+.sc-item{text-align:center;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:14px;padding:24px 16px}
+.sc-ic{width:48px;height:48px;border-radius:13px;background:rgba(0,167,111,0.1);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 14px}
+.sc-name{font-size:13px;font-weight:600;margin-bottom:6px}
+.sc-d{font-size:11px;color:var(--faint);line-height:1.5}
+
+/* PRICING */
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px;align-items:center}
+.plan{background:linear-gradient(160deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));border:1px solid var(--border);border-radius:18px;padding:28px 24px;position:relative;transition:transform .2s}
+.plan:hover{transform:translateY(-4px)}
+.plan.featured{border-color:rgba(0,167,111,0.4);background:linear-gradient(160deg,rgba(0,167,111,0.08),rgba(255,255,255,0.01))}
+.plan-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:10px;font-weight:600;padding:4px 14px;border-radius:20px}
+.plan-name{font-size:14px;font-weight:600;margin-bottom:8px}
+.plan-price{font-size:36px;font-weight:800;letter-spacing:-1px}
+.plan-price span{font-size:13px;font-weight:400;color:var(--faint)}
+.plan-desc{font-size:11px;color:var(--faint);margin:10px 0 20px;line-height:1.5}
+.plan-feats{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+.pf{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.65)}
+.pf-check{color:var(--accent2);font-weight:700}
+.plan-cta{text-align:center;font-size:13px;font-weight:600;padding:12px;border-radius:10px;cursor:pointer;transition:all .15s}
+.plan-cta.ghost{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#fff}
+.plan-cta.ghost:hover{background:rgba(255,255,255,0.1)}
+.plan-cta.solid{background:var(--accent);color:#fff}
+.plan-cta.solid:hover{background:var(--accent3)}
+
+/* FINAL CTA */
+.final-cta{margin:0 0 80px;position:relative}
+.cta-box{background:linear-gradient(145deg,var(--accent3),#006644);border-radius:28px;padding:56px 32px;text-align:center;position:relative;overflow:hidden}
+.cta-glow{position:absolute;top:-60%;left:50%;transform:translateX(-50%);width:500px;height:320px;max-width:100%;background:rgba(255,255,255,0.1);border-radius:50%;filter:blur(70px)}
+.cta-title{font-size:clamp(24px,4vw,32px);font-weight:800;letter-spacing:-0.6px;margin-bottom:14px;position:relative}
+.cta-sub{font-size:15px;color:rgba(255,255,255,0.85);margin-bottom:28px;position:relative}
+.cta-btns{display:flex;gap:12px;justify-content:center;position:relative;flex-wrap:wrap}
+.cta-primary{background:#fff;color:var(--accent3);font-size:14px;font-weight:700;padding:15px 32px;border-radius:12px;cursor:pointer;border:none;font-family:inherit;transition:transform .15s}
+.cta-primary:hover{transform:translateY(-2px)}
+.cta-ghost{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:14px;font-weight:600;padding:15px 30px;border-radius:12px;cursor:pointer;font-family:inherit}
+
+/* FOOTER */
+.footer{padding:50px 0 32px;border-top:0.5px solid var(--border)}
+.foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:36px;margin-bottom:36px}
+.foot-brand{max-width:260px}
+.foot-logo{display:flex;align-items:center;gap:9px;margin-bottom:14px}
+.foot-mark{width:32px;height:32px;border-radius:9px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff}
+.foot-name{font-size:16px;font-weight:700}
+.foot-desc{font-size:12px;color:var(--faint);line-height:1.6}
+.foot-col{display:flex;flex-direction:column;gap:11px}
+.foot-ct{font-size:12px;font-weight:600;margin-bottom:5px}
+.foot-link{font-size:12px;color:var(--faint);cursor:pointer;transition:color .15s}
+.foot-link:hover{color:#fff}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:0.5px solid var(--border);font-size:11px;color:var(--faint);flex-wrap:wrap;gap:10px}
+
+/* RESPONSIVE */
+@media(max-width:880px){
+  .nav-links{display:none}
+  .prob-grid,.feat-grid,.steps,.roles,.pricing,.sec-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .testi-grid{grid-template-columns:1fr}
+  .step-line{display:none}
+  .plan.featured{transform:none}
+  .m-screen{flex-direction:column;gap:16px}
+  .screens{height:auto;min-height:360px}
+  .sc-charts{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .sc-kpis{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:1fr}
+  .nav{padding:14px 20px}
+}
+</style>
+</head>
+<body dir="rtl">
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">
+    <div class="nav-mark">S</div>
+    <div class="nav-name">Somod</div>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" href="#features" data-ar="المميزات" data-en="Features">المميزات</a>
+    <a class="nav-link" href="#how" data-ar="كيف يعمل" data-en="How it works">كيف يعمل</a>
+    <a class="nav-link" href="#pricing" data-ar="الأسعار" data-en="Pricing">الأسعار</a>
+    <a class="nav-link" href="#contact" data-ar="تواصل" data-en="Contact">تواصل</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-lang" id="langToggle">🌐 <span id="langLabel">EN</span></button>
+    <button class="nav-cta" data-ar="اطلب عرضاً" data-en="Request Demo">اطلب عرضاً</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="mesh"></div>
+  <div class="hero-grid"></div>
+  <div class="container">
+    <div class="hero-badge reveal in">
+      <span class="badge-pill" data-ar="جديد" data-en="New">جديد</span>
+      <span data-ar="منصة إدارة ما بعد التسليم الأولى في السعودية" data-en="Saudi Arabia's first post-handover management platform">منصة إدارة ما بعد التسليم الأولى في السعودية</span>
+    </div>
+    <h1 class="hero-title reveal in d1">
+      <span data-ar="أدِر صيانة عقاراتك بعد التسليم " data-en="Manage your property maintenance ">أدِر صيانة عقاراتك بعد التسليم </span><span class="grad" data-ar="باحترافية" data-en="professionally">باحترافية</span>
+    </h1>
+    <p class="hero-sub reveal in d2" data-ar="منصة واحدة تربط شركتك بالملّاك والموردين — طلبات الصيانة، الضمانات، والتقارير اللحظية في مكان واحد." data-en="One platform connecting your company with owners and vendors — maintenance requests, warranties, and real-time reports in one place.">منصة واحدة تربط شركتك بالملّاك والموردين — طلبات الصيانة، الضمانات، والتقارير اللحظية في مكان واحد.</p>
+    <div class="hero-ctas reveal in d3">
+      <button class="btn-primary"><span data-ar="اطلب عرضاً توضيحياً" data-en="Request a Demo">اطلب عرضاً توضيحياً</span> <span class="arrow">←</span></button>
+      <button class="btn-ghost"><span class="play-ic">▶</span> <span data-ar="شاهد كيف يعمل" data-en="See how it works">شاهد كيف يعمل</span></button>
+    </div>
+    <div class="hero-note reveal in d4">
+      <span class="note-item">✓ <span data-ar="تجربة مجانية" data-en="Free trial">تجربة مجانية</span></span>
+      <span class="note-item">✓ <span data-ar="بدون بطاقة ائتمان" data-en="No credit card">بدون بطاقة ائتمان</span></span>
+      <span class="note-item">✓ <span data-ar="إعداد في دقائق" data-en="Setup in minutes">إعداد في دقائق</span></span>
+    </div>
+
+    <!-- DEMO -->
+    <div class="demo-wrap reveal in d5">
+      <div class="win">
+        <div class="win-bar">
+          <div class="wdot" style="background:#ff5f57"></div>
+          <div class="wdot" style="background:#febc2e"></div>
+          <div class="wdot" style="background:#28c840"></div>
+          <div class="win-url" id="winUrl">app.somod.sa/dashboard</div>
+        </div>
+        <div class="screens">
+          <!-- Screen 0: Dashboard -->
+          <div class="screen active" data-screen="0">
+            <div class="sc-head">
+              <div><div class="sc-title" data-ar="لوحة التحكم التشغيلية" data-en="Operations Dashboard">لوحة التحكم التشغيلية</div><div class="sc-sub" data-ar="مشروع النخيل — الرياض" data-en="Al Nakheel Project — Riyadh">مشروع النخيل — الرياض</div></div>
+              <div class="sc-period"><div class="sc-po" data-ar="سنة" data-en="Year">سنة</div><div class="sc-po" data-ar="ربع" data-en="Qtr">ربع</div><div class="sc-po on" data-ar="شهر" data-en="Month">شهر</div></div>
+            </div>
+            <div class="sc-kpis">
+              <div class="kp"><div class="kp-top" style="background:#f59e0b"></div><div class="kp-row"><div class="kp-n" data-count="47">٠</div><div class="kp-badge">↑١٢٪</div></div><div class="kp-l" data-ar="طلبات نشطة" data-en="Active">طلبات نشطة</div></div>
+              <div class="kp"><div class="kp-top" style="background:#00a76f"></div><div class="kp-row"><div class="kp-n" data-count="94" data-suffix="٪">٠</div><div class="kp-badge">↑٣٪</div></div><div class="kp-l" data-ar="معدل الإنجاز" data-en="Resolution">معدل الإنجاز</div></div>
+              <div class="kp"><div class="kp-top" style="background:#7c3aed"></div><div class="kp-row"><div class="kp-n">٤.٣</div><div class="kp-badge">↑٠.٢</div></div><div class="kp-l" data-ar="متوسط التقييم" data-en="Rating">متوسط التقييم</div></div>
+              <div class="kp"><div class="kp-top" style="background:#2563eb"></div><div class="kp-row"><div class="kp-n" data-count="128">٠</div><div class="kp-badge">↑٨٪</div></div><div class="kp-l" data-ar="تم الحل" data-en="Resolved">تم الحل</div></div>
+            </div>
+            <div class="sc-charts">
+              <div class="sc-chart">
+                <div class="scc-t" data-ar="الطلبات — آخر ٦ أشهر" data-en="Requests — Last 6 months">الطلبات — آخر ٦ أشهر</div>
+                <div class="sc-bars" id="scBars">
+                  <div class="scb" data-h="24"></div><div class="scb" data-h="33"></div><div class="scb" data-h="40"></div>
+                  <div class="scb" data-h="46"></div><div class="scb" data-h="54"></div><div class="scb hl" data-h="66"></div>
+                </div>
+              </div>
+              <div class="sc-chart">
+                <div class="scc-t" data-ar="توزيع الحالات" data-en="Status">توزيع الحالات</div>
+                <div class="sc-donut">
+                  <svg width="70" height="70" viewBox="0 0 70 70">
+                    <circle cx="35" cy="35" r="26" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+                    <circle cx="35" cy="35" r="26" fill="none" stroke="#00a76f" stroke-width="8" stroke-dasharray="78 163" stroke-linecap="round" transform="rotate(-90 35 35)"/>
+                    <circle cx="35" cy="35" r="26" fill="none" stroke="#2563eb" stroke-width="8" stroke-dasharray="42 163" stroke-dashoffset="-78" stroke-linecap="round" transform="rotate(-90 35 35)"/>
+                    <circle cx="35" cy="35" r="26" fill="none" stroke="#f59e0b" stroke-width="8" stroke-dasharray="26 163" stroke-dashoffset="-120" stroke-linecap="round" transform="rotate(-90 35 35)"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Screen 1: Requests -->
+          <div class="screen" data-screen="1">
+            <div class="sc-head"><div><div class="sc-title" data-ar="طلبات الصيانة" data-en="Maintenance Requests">طلبات الصيانة</div><div class="sc-sub" data-ar="٤٧ طلب نشط" data-en="47 active requests">٤٧ طلب نشط</div></div></div>
+            <div class="req-list">
+              <div class="req"><div class="req-ic" style="background:rgba(37,99,235,0.15)">❄️</div><div class="req-info"><div class="req-title" data-ar="تكييف غرفة النوم" data-en="Bedroom AC">تكييف غرفة النوم</div><div class="req-sub" data-ar="وحدة A-12 · منذ ساعتين" data-en="Unit A-12 · 2h ago">وحدة A-12 · منذ ساعتين</div></div><div class="chip" style="background:rgba(245,158,11,0.15);color:#fbbf24" data-ar="مُقدَّم" data-en="Submitted">مُقدَّم</div></div>
+              <div class="req"><div class="req-ic" style="background:rgba(0,167,111,0.15)">💧</div><div class="req-info"><div class="req-title" data-ar="تسريب الحمام" data-en="Bathroom leak">تسريب الحمام</div><div class="req-sub" data-ar="وحدة B-05 · منذ ٥ ساعات" data-en="Unit B-05 · 5h ago">وحدة B-05 · منذ ٥ ساعات</div></div><div class="chip" style="background:rgba(37,99,235,0.15);color:#60a5fa" data-ar="قيد التنفيذ" data-en="In Progress">قيد التنفيذ</div></div>
+              <div class="req"><div class="req-ic" style="background:rgba(124,58,237,0.15)">⚡</div><div class="req-info"><div class="req-title" data-ar="كهرباء المطبخ" data-en="Kitchen electrical">كهرباء المطبخ</div><div class="req-sub" data-ar="وحدة C-21 · أمس" data-en="Unit C-21 · Yesterday">وحدة C-21 · أمس</div></div><div class="chip" style="background:rgba(0,167,111,0.15);color:#00d492" data-ar="تم الحل" data-en="Resolved">تم الحل</div></div>
+              <div class="req"><div class="req-ic" style="background:rgba(245,158,11,0.15)">🔧</div><div class="req-info"><div class="req-title" data-ar="صيانة المصعد" data-en="Elevator service">صيانة المصعد</div><div class="req-sub" data-ar="برج A · أمس" data-en="Tower A · Yesterday">برج A · أمس</div></div><div class="chip" style="background:rgba(0,167,111,0.15);color:#00d492" data-ar="تم الحل" data-en="Resolved">تم الحل</div></div>
+            </div>
+          </div>
+          <!-- Screen 2: Mobile -->
+          <div class="screen" data-screen="2">
+            <div class="m-screen">
+              <div class="phone">
+                <div class="ph-top"><div class="ph-greet" data-ar="مرحباً، أحمد 👋" data-en="Hi, Ahmed 👋">مرحباً، أحمد 👋</div><div class="ph-unit" data-ar="وحدة A-12 — النخيل" data-en="Unit A-12 — Nakheel">وحدة A-12 — النخيل</div></div>
+                <div class="ph-body">
+                  <div class="ph-card"><div class="ph-cu" data-ar="وحدة A-12" data-en="Unit A-12">وحدة A-12</div><div class="ph-cl" data-ar="برج النخيل — الرياض" data-en="Nakheel Tower — Riyadh">برج النخيل — الرياض</div><div class="ph-cta" data-ar="+ طلب صيانة جديد" data-en="+ New Request">+ طلب صيانة جديد</div></div>
+                  <div class="ph-req"><span class="ph-rt" data-ar="تكييف غرفة النوم" data-en="Bedroom AC">تكييف غرفة النوم</span><span class="chip" style="background:rgba(37,99,235,0.15);color:#60a5fa" data-ar="تنفيذ" data-en="Active">تنفيذ</span></div>
+                  <div class="ph-req"><span class="ph-rt" data-ar="تسريب الحمام" data-en="Bathroom leak">تسريب الحمام</span><span class="chip" style="background:rgba(0,167,111,0.15);color:#00d492" data-ar="تم" data-en="Done">تم</span></div>
+                </div>
+                <div class="ph-nav"><span class="ph-ni on">⌂</span><span class="ph-ni">⊞</span><span class="ph-ni">☰</span><span class="ph-ni">🔔</span></div>
+              </div>
+              <div class="m-txt">
+                <div class="m-badge" data-ar="للملّاك" data-en="For Owners">للملّاك</div>
+                <div class="m-title" data-ar="تطبيق المالك على الجوال" data-en="Owner app on mobile">تطبيق المالك على الجوال</div>
+                <div class="m-sub" data-ar="الملّاك يقدّمون طلبات الصيانة ويتابعونها لحظة بلحظة — من أي مكان." data-en="Owners submit and track maintenance requests in real-time — from anywhere.">الملّاك يقدّمون طلبات الصيانة ويتابعونها لحظة بلحظة — من أي مكان.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-reflect"></div>
+    </div>
+    <div class="prog">
+      <button class="pd on" data-dot="0"></button>
+      <button class="pd" data-dot="1"></button>
+      <button class="pd" data-dot="2"></button>
+    </div>
+  </div>
+</header>
+
+<!-- TRUST -->
+<div class="trust">
+  <div class="trust-label" data-ar="موثوق به من شركات التطوير العقاري الرائدة" data-en="Trusted by leading real estate developers">موثوق به من شركات التطوير العقاري الرائدة</div>
+  <div class="trust-logos">
+    <div class="tlogo" data-ar="النخيل" data-en="Nakheel">النخيل</div>
+    <div class="tlogo" data-ar="الياسمين" data-en="Yasmin">الياسمين</div>
+    <div class="tlogo" data-ar="أبراج الرياض" data-en="Riyadh Towers">أبراج الرياض</div>
+    <div class="tlogo" data-ar="واحة السلام" data-en="Salam Oasis">واحة السلام</div>
+    <div class="tlogo" data-ar="مروج القيروan" data-en="Qairawan">مروج القيروان</div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="sec">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-tag" data-ar="التحدي" data-en="The Challenge">التحدي</div>
+      <h2 class="sec-title" data-ar="إدارة ما بعد التسليم فوضى بدون نظام" data-en="Post-handover management is chaos without a system">إدارة ما بعد التسليم فوضى بدون نظام</h2>
+      <p class="sec-sub" data-ar="شركات التطوير تواجه نفس المشاكل كل يوم — وتدفع ثمنها من سمعتها." data-en="Developers face the same problems daily — and pay for it with their reputation.">شركات التطوير تواجه نفس المشاكل كل يوم — وتدفع ثمنها من سمعتها.</p>
+    </div>
+    <div class="prob-grid">
+      <div class="prob reveal d1">
+        <div class="prob-ic">😤</div>
+        <div class="prob-title" data-ar="طلبات الملّاك تضيع" data-en="Owner requests get lost">طلبات الملّاك تضيع</div>
+        <div class="prob-desc" data-ar="بلاغات على واتساب ومكالمات متفرقة — بدون تتبّع، والملّاك يفقدون الثقة." data-en="Scattered WhatsApp messages and calls — no tracking, and owners lose trust.">بلاغات على واتساب ومكالمات متفرقة — بدون تتبّع، والملّاك يفقدون الثقة.</div>
+      </div>
+      <div class="prob reveal d2">
+        <div class="prob-ic">🕳️</div>
+        <div class="prob-title" data-ar="لا رؤية عن الأداء" data-en="No visibility on performance">لا رؤية عن الأداء</div>
+        <div class="prob-desc" data-ar="لا تعرف كم طلب مفتوح، ولا أداء فرقك، ولا أين تتعطّل العملية." data-en="You don't know how many requests are open, your teams' performance, or where things stall.">لا تعرف كم طلب مفتوح، ولا أداء فرقك، ولا أين تتعطّل العملية.</div>
+      </div>
+      <div class="prob reveal d3">
+        <div class="prob-ic">📅</div>
+        <div class="prob-title" data-ar="ضمانات تنتهي بلا متابعة" data-en="Warranties expire unnoticed">ضمانات تنتهي بلا متابعة</div>
+        <div class="prob-desc" data-ar="تدفع تكاليف إصلاحات كانت مشمولة بالضمان — لأن لا أحد تابع التواريخ." data-en="You pay for repairs that were under warranty — because no one tracked the dates.">تدفع تكاليف إصلاحات كانت مشمولة بالضمان — لأن لا أحد تابع التواريخ.</div>
+      </div>
+    </div>
+    <div class="prob-arrow reveal" data-ar="↓ Somod يحل كل هذا في منصة واحدة ↓" data-en="↓ Somod solves all this in one platform ↓">↓ Somod يحل كل هذا في منصة واحدة ↓</div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="sec" id="features">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-tag" data-ar="المميزات" data-en="Features">المميزات</div>
+      <h2 class="sec-title" data-ar="كل ما تحتاجه لإدارة ما بعد التسليم" data-en="Everything you need for post-handover">كل ما تحتاجه لإدارة ما بعد التسليم</h2>
+      <p class="sec-sub" data-ar="منصة شاملة تغطي دورة حياة الصيانة كاملة — من البلاغ حتى الإنجاز." data-en="A complete platform covering the full maintenance lifecycle — from report to resolution.">منصة شاملة تغطي دورة حياة الصيانة كاملة — من البلاغ حتى الإنجاز.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat reveal d1"><div class="feat-glow" style="background:#00a76f"></div><div class="feat-ic" style="background:rgba(0,167,111,0.12);color:#00d492">🔧</div><div class="feat-title" data-ar="إدارة طلبات الصيانة" data-en="Maintenance Management">إدارة طلبات الصيانة</div><div class="feat-desc" data-ar="استقبل البلاغات، افرزها، ووجّهها للفنيين أو الموردين — مع تتبع لحظي لكل طلب." data-en="Receive, triage, and route requests to technicians or vendors — with real-time tracking.">استقبل البلاغات، افرزها، ووجّهها للفنيين أو الموردين — مع تتبع لحظي لكل طلب.</div></div>
+      <div class="feat reveal d2"><div class="feat-glow" style="background:#2563eb"></div><div class="feat-ic" style="background:rgba(37,99,235,0.12);color:#60a5fa">🛡️</div><div class="feat-title" data-ar="تتبّع الضمانات" data-en="Warranty Tracking">تتبّع الضمانات</div><div class="feat-desc" data-ar="سجّل ضمانات كل أصل، واحصل على تنبيهات قبل انتهائها — لا تفوّت أي ضمان." data-en="Log warranties for every asset and get alerts before they expire — never miss one.">سجّل ضمانات كل أصل، واحصل على تنبيهات قبل انتهائها — لا تفوّت أي ضمان.</div></div>
+      <div class="feat reveal d3"><div class="feat-glow" style="background:#7c3aed"></div><div class="feat-ic" style="background:rgba(124,58,237,0.12);color:#a78bfa">📊</div><div class="feat-title" data-ar="تقارير وتحليلات" data-en="Reports & Analytics">تقارير وتحليلات</div><div class="feat-desc" data-ar="لوحات تحكم لحظية ومؤشرات أداء — اتخذ قراراتك بناءً على بيانات حقيقية." data-en="Real-time dashboards and KPIs — make decisions based on real data.">لوحات تحكم لحظية ومؤشرات أداء — اتخذ قراراتك بناءً على بيانات حقيقية.</div></div>
+      <div class="feat reveal d1"><div class="feat-glow" style="background:#f59e0b"></div><div class="feat-ic" style="background:rgba(245,158,11,0.12);color:#fbbf24">⚡</div><div class="feat-title" data-ar="أتمتة ذكية (SLA)" data-en="Smart Automation (SLA)">أتمتة ذكية (SLA)</div><div class="feat-desc" data-ar="تنبيهات وتصعيد تلقائي حسب الأولوية — لا يقع أي طلب في النسيان أبداً." data-en="Automatic alerts and escalation by priority — no request ever falls through.">تنبيهات وتصعيد تلقائي حسب الأولوية — لا يقع أي طلب في النسيان أبداً.</div></div>
+      <div class="feat reveal d2"><div class="feat-glow" style="background:#06b6d4"></div><div class="feat-ic" style="background:rgba(6,182,212,0.12);color:#22d3ee">📱</div><div class="feat-title" data-ar="تطبيق للملّاك" data-en="Owner App">تطبيق للملّاك</div><div class="feat-desc" data-ar="الملّاك يقدّمون طلباتهم ويتابعونها من الجوال — تجربة سلسة تماماً." data-en="Owners submit and track requests from their phones — a seamless experience.">الملّاك يقدّمون طلباتهم ويتابعونها من الجوال — تجربة سلسة تماماً.</div></div>
+      <div class="feat reveal d3"><div class="feat-glow" style="background:#dc2626"></div><div class="feat-ic" style="background:rgba(220,38,38,0.12);color:#f87171">📥</div><div class="feat-title" data-ar="استيراد فوري" data-en="Instant Import">استيراد فوري</div><div class="feat-desc" data-ar="انقل كل بياناتك دفعة واحدة عبر Excel — واشتغل من اليوم الأول." data-en="Migrate all your data at once via Excel — and work from day one.">انقل كل بياناتك دفعة واحدة عبر Excel — واشتغل من اليوم الأول.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="sec" id="how">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-tag" data-ar="كيف يعمل" data-en="How it works">كيف يعمل</div>
+      <h2 class="sec-title" data-ar="ابدأ في ٣ خطوات" data-en="Get started in 3 steps">ابدأ في ٣ خطوات</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal d1"><div class="step-line"></div><div class="step-num">١</div><div class="step-title" data-ar="انقل بياناتك" data-en="Import your data">انقل بياناتك</div><div class="step-desc" data-ar="ارفع ملف Excel بمشاريعك ووحداتك وملّاكك — يكتمل الإعداد في دقائق." data-en="Upload an Excel file with your projects, units, and owners — setup completes in minutes.">ارفع ملف Excel بمشاريعك ووحداتك وملّاكك — يكتمل الإعداد في دقائق.</div></div>
+      <div class="step reveal d2"><div class="step-line"></div><div class="step-num">٢</div><div class="step-title" data-ar="فعّل فريقك" data-en="Activate your team">فعّل فريقك</div><div class="step-desc" data-ar="أضف المنسقين والفنيين والموردين — كل واحد يشوف ما يخصّه فقط." data-en="Add coordinators, technicians, and vendors — each sees only what concerns them.">أضف المنسقين والفنيين والموردين — كل واحد يشوف ما يخصّه فقط.</div></div>
+      <div class="step reveal d3"><div class="step-num">٣</div><div class="step-title" data-ar="أدِر باحترافية" data-en="Manage professionally">أدِر باحترافية</div><div class="step-desc" data-ar="استقبل الطلبات، تابع الأداء، واتخذ قراراتك من لوحة واحدة." data-en="Receive requests, track performance, and decide from one dashboard.">استقبل الطلبات، تابع الأداء، واتخذ قراراتك من لوحة واحدة.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS + TESTIMONIALS -->
+<section class="sec">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-tag" data-ar="النتائج" data-en="Results">النتائج</div>
+      <h2 class="sec-title" data-ar="أرقام تتحدث عن نفسها" data-en="Numbers that speak for themselves">أرقام تتحدث عن نفسها</h2>
+    </div>
+    <div class="stats reveal">
+      <div class="stat"><div class="stat-n" data-ar="٤٠٪" data-en="40%">٤٠٪</div><div class="stat-l" data-ar="أسرع في الاستجابة" data-en="Faster response">أسرع في الاستجابة</div></div>
+      <div class="stat"><div class="stat-n" data-ar="٩٤٪" data-en="94%">٩٤٪</div><div class="stat-l" data-ar="رضا الملّاك" data-en="Owner satisfaction">رضا الملّاك</div></div>
+      <div class="stat"><div class="stat-n" data-ar="+٥٠٠" data-en="500+">+٥٠٠</div><div class="stat-l" data-ar="وحدة مُدارة" data-en="Units managed">وحدة مُدارة</div></div>
+      <div class="stat"><div class="stat-n" data-ar="٢.٥" data-en="2.5">٢.٥</div><div class="stat-l" data-ar="يوم متوسط الحل" data-en="Days avg. resolution">يوم متوسط الحل</div></div>
+    </div>
+    <div class="testi-grid">
+      <div class="testi reveal d1">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote" data-ar="«قبل Somod كنا نفقد طلبات الملّاك باستمرار. الآن كل شيء موثّق ومتابَع — وشكاوى الملّاك انخفضت بشكل ملحوظ.»" data-en="&quot;Before Somod we kept losing owner requests. Now everything is documented and tracked — and owner complaints dropped significantly.&quot;">«قبل Somod كنا نفقد طلبات الملّاك باستمرار. الآن كل شيء موثّق ومتابَع — وشكاوى الملّاك انخفضت بشكل ملحوظ.»</div>
+        <div class="testi-author"><div class="testi-av" style="background:linear-gradient(135deg,#00a76f,#00c983)">فع</div><div><div class="testi-name" data-ar="فهد العتيبي" data-en="Fahad Al-Otaibi">فهد العتيبي</div><div class="testi-role" data-ar="مدير العمليات — شركة النخيل" data-en="Operations Manager — Nakheel Co.">مدير العمليات — شركة النخيل</div></div></div>
+      </div>
+      <div class="testi reveal d2">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-quote" data-ar="«التقارير اللحظية غيّرت طريقة إدارتنا. أصبحنا نتخذ قرارات مبنية على بيانات حقيقية بدل التخمين.»" data-en="&quot;Real-time reports changed how we manage. We now make data-driven decisions instead of guessing.&quot;">«التقارير اللحظية غيّرت طريقة إدارتنا. أصبحنا نتخذ قرارات مبنية على بيانات حقيقية بدل التخمين.»</div>
+        <div class="testi-author"><div class="testi-av" style="background:linear-gradient(135deg,#2563eb,#60a5fa)">نق</div><div><div class="testi-name" data-ar="نورة القحطاني" data-en="Noura Al-Qahtani">نورة القحطاني</div><div class="testi-role" data-ar="مديرة تنفيذية — مجموعة الياسمين" data-en="Executive — Yasmin Group">مديرة تنفيذية — مجموعة الياسمين</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROLES -->
+<section class="sec">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-tag" data-ar="لكل دور تجربته" data-en="A role for everyone">لكل دور تجربته</div>
+      <h2 class="sec-title" data-ar="مصمّم لكل فريقك" data-en="Built for your whole team">مصمّم لكل فريقك</h2>
+    </div>
+    <div class="roles">
+      <div class="role reveal d1"><div class="role-ic" style="background:rgba(0,167,111,0.12)">👔</div><div><div class="role-name" data-ar="مدير النظام" data-en="System Admin">مدير النظام</div><div class="role-desc" data-ar="رؤية شاملة وتحكم كامل" data-en="Full visibility and control">رؤية شاملة وتحكم كامل</div></div></div>
+      <div class="role reveal d2"><div class="role-ic" style="background:rgba(124,58,237,0.12)">📈</div><div><div class="role-name" data-ar="المدير التنفيذي" data-en="Executive">المدير التنفيذي</div><div class="role-desc" data-ar="تقارير وتحليلات للقرار" data-en="Reports for decisions">تقارير وتحليلات للقرار</div></div></div>
+      <div class="role reveal d3"><div class="role-ic" style="background:rgba(37,99,235,0.12)">🗂️</div><div><div class="role-name" data-ar="منسّق الصيانة" data-en="Coordinator">منسّق الصيانة</div><div class="role-desc" data-ar="فرز الطلبات وتوزيع المهام" data-en="Triage and assign tasks">فرز الطلبات وتوزيع المهام</div></div></div>
+      <div class="role reveal d1"><div class="role-ic" style="background:rgba(245,158,11,0.12)">🔧</div><div><div class="role-name" data-ar="الفني" data-en="Technician">الفني</div><div class="role-desc" data-ar="مهام ميدانية على الجوال" data-en="Field tasks on mobile">مهام ميدانية على الجوال</div></div></div>
+      <div class="role reveal d2"><div class="role-ic" style="background:rgba(6,182,212,0.12)">🚚</div><div><div class="role-name" data-ar="المورّد" data-en="Vendor">المورّد</div><div class="role-desc" data-ar="استقبال المهام وإدارة فنييه" data-en="Receive tasks, manage techs">استقبال المهام وإدارة فنييه</div></div></div>
+      <div class="role reveal d3"><div class="role-ic" style="background:rgba(220,38,38,0.12)">🏠</div><div><div class="role-name" data-ar="المالك" data-en="Owner">المالك</div><div class="role-desc" data-ar="تقديم الطلبات ومتابعتها" data-en="Submit and track requests">تقديم الطلبات ومتابعتها</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section class="sec">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-tag" data-ar="الأمان والموثوقية" data-en="Security & Reliability">الأمان والموثوقية</div>
+      <h2 class="sec-title" data-ar="بياناتك في أيدٍ أمينة" data-en="Your data is in safe hands">بياناتك في أيدٍ أمينة</h2>
+    </div>
+    <div class="sec-grid">
+      <div class="sc-item reveal d1"><div class="sc-ic">🔒</div><div class="sc-name" data-ar="تشفير كامل" data-en="Full Encryption">تشفير كامل</div><div class="sc-d" data-ar="بياناتك مشفّرة أثناء النقل والتخزين" data-en="Encrypted in transit and at rest">بياناتك مشفّرة أثناء النقل والتخزين</div></div>
+      <div class="sc-item reveal d2"><div class="sc-ic">🏢</div><div class="sc-name" data-ar="عزل كامل للبيانات" data-en="Data Isolation">عزل كامل للبيانات</div><div class="sc-d" data-ar="بيانات كل شركة معزولة تماماً" data-en="Each company's data fully isolated">بيانات كل شركة معزولة تماماً</div></div>
+      <div class="sc-item reveal d3"><div class="sc-ic">💾</div><div class="sc-name" data-ar="نسخ احتياطي يومي" data-en="Daily Backups">نسخ احتياطي يومي</div><div class="sc-d" data-ar="نسخ احتياطية تلقائية لبياناتك" data-en="Automatic backups of your data">نسخ احتياطي يومي لبياناتك</div></div>
+      <div class="sc-item reveal d4"><div class="sc-ic">🎧</div><div class="sc-name" data-ar="دعم فني متواصل" data-en="Dedicated Support">دعم فني متواصل</div><div class="sc-d" data-ar="فريق دعم جاهز لمساعدتك" data-en="A support team ready to help">فريق دعم جاهز لمساعدتك</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="sec" id="pricing">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-tag" data-ar="الأسعار" data-en="Pricing">الأسعار</div>
+      <h2 class="sec-title" data-ar="خطط تناسب حجم مشاريعك" data-en="Plans that fit your scale">خطط تناسب حجم مشاريعك</h2>
+      <p class="sec-sub" data-ar="ابدأ صغيراً وتوسّع معنا — بدون التزامات طويلة." data-en="Start small and scale with us — no long commitments.">ابدأ صغيراً وتوسّع معنا — بدون التزامات طويلة.</p>
+    </div>
+    <div class="pricing">
+      <div class="plan reveal d1">
+        <div class="plan-name" data-ar="الأساسية" data-en="Starter">الأساسية</div>
+        <div class="plan-price" data-ar="٩٩٩" data-en="999">٩٩٩<span data-ar=" ر.س/شهر" data-en=" SAR/mo"> ر.س/شهر</span></div>
+        <div class="plan-desc" data-ar="للشركات الناشئة وحتى ٥٠ وحدة" data-en="For startups, up to 50 units">للشركات الناشئة وحتى ٥٠ وحدة</div>
+        <div class="plan-feats">
+          <div class="pf"><span class="pf-check">✓</span> <span data-ar="حتى ٥٠ وحدة سكنية" data-en="Up to 50 units">حتى ٥٠ وحدة سكنية</span></div>
+          <div class="pf"><span class="pf-check">✓</span> <span data-ar="إدارة الصيانة والضمانات" data-en="Maintenance & warranties">إدارة الصيانة والضمانات</span></div>
+          <div class="pf"><span class="pf-check">✓</span> <span data-ar="تطبيق الملّاك" data-en="Owner app">تطبيق الملّاك</span></div>
+          <div class="pf"><span class="pf-check">✓</span> <span data-ar="دعم فني أساسي" data-en="Basic support">دعم فني أساسي</span></div>
+        </div>
+        <div class="plan-cta ghost" data-ar="ابدأ الآن" data-en="Get Started">ابدأ الآن</div>
+      </div>
+      <div class="plan featured reveal d2">
+        <div class="plan-badge" data-ar="الأكثر شيوعاً" data-en="Most Popular">الأكثر شيوعاً</div>
+        <div class="plan-name" data-ar="الاحترافية" data-en="Professional">الاحترافية</div>
+        <div class="plan-price" data-ar="٢٬٩٩٩" data-en="2,999">٢٬٩٩٩<span data-ar=" ر.س/شهر" data-en=" SAR/mo"> ر.س/شهر</span></div>
+        <div class="plan-desc" data-ar="للشركات المتوسطة وحتى ٥٠٠ وحدة" data-en="For mid-size, up to 500 units">للشركات المتوسطة وحتى ٥٠٠ وحدة</div>
+        <div class="plan-feats">
+          <div class="pf"><span class="pf-check">✓</span> <span data-ar="حتى ٥٠٠ وحدة سكنية" data-en="Up to 500 units">حتى ٥٠٠ وحدة سكنية</span></div>
+          <div class="pf"><span class="pf-check">✓</span> <span data-ar="كل مميزات الأساسية" data-en="All Starter features">كل مميزات الأساسية</span></div>
+          <div class="pf"><span class="pf-check">✓</span> <span data-ar="أتمتة SLA وتصعيد" data-en="SLA automation & escalation">أتمتة SLA وتصعيد</span></div>
+          <div class="pf"><span class="pf-check">✓</span> <span data-ar="تقارير متقدمة" data-en="Advanced reports">تقارير متقدمة</span></div>
+          <div class="pf"><span class="pf-check">✓</span> <span data-ar="دعم فني أولوية" data-en="Priority support">دعم فني أولوية</span></div>
+        </div>
+        <div class="plan-cta solid" data-ar="ابدأ الآن" data-en="Get Started">ابدأ الآن</div>
+      </div>
+      <div class="plan reveal d3">
+        <div class="plan-name" data-ar="المؤسسات" data-en="Enterprise">المؤسسات</div>
+        <div class="plan-price" data-ar="حسب الطلب" data-en="Custom">حسب الطلب</div>
+        <div class="plan-desc" data-ar="للشركات الكبرى — وحدات غير محدودة" data-en="For enterprises — unlimited units">للشركات الكبرى — وحدات غير محدودة</div>
+        <div class="plan-feats">
+          <div class="pf"><span class="pf-check">✓</span> <span data-ar="وحدات غير محدودة" data-en="Unlimited units">وحدات غير محدودة</span></div>
+          <div class="pf"><span class="pf-check">✓</span> <span data-ar="كل مميزات الاحترافية" data-en="All Professional features">كل مميزات الاحترافية</span></div>
+          <div class="pf"><span class="pf-check">✓</span> <span data-ar="علامة تجارية خاصة" data-en="White-label branding">علامة تجارية خاصة</span></div>
+          <div class="pf"><span class="pf-check">✓</span> <span data-ar="مدير حساب مخصص" data-en="Dedicated account manager">مدير حساب مخصص</span></div>
+        </div>
+        <div class="plan-cta ghost" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="sec" id="contact">
+  <div class="container">
+    <div class="final-cta reveal">
+      <div class="cta-box">
+        <div class="cta-glow"></div>
+        <h2 class="cta-title" data-ar="جاهز لإدارة مشاريعك باحترافية؟" data-en="Ready to manage your projects professionally?">جاهز لإدارة مشاريعك باحترافية؟</h2>
+        <p class="cta-sub" data-ar="انضم لشركات التطوير الرائدة — واحصل على عرض توضيحي مجاني اليوم." data-en="Join leading developers — get a free demo today.">انضم لشركات التطوير الرائدة — واحصل على عرض توضيحي مجاني اليوم.</p>
+        <div class="cta-btns">
+          <button class="cta-primary"><span data-ar="اطلب عرضاً توضيحياً" data-en="Request a Demo">اطلب عرضاً توضيحياً</span> ←</button>
+          <button class="cta-ghost" data-ar="تواصل مع المبيعات" data-en="Talk to Sales">تواصل مع المبيعات</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="foot-logo"><div class="foot-mark">S</div><div class="foot-name">Somod</div></div>
+        <div class="foot-desc" data-ar="منصة إدارة ما بعد التسليم الأولى في السعودية — لشركات التطوير العقاري." data-en="Saudi Arabia's first post-handover management platform — for real estate developers.">منصة إدارة ما بعد التسليم الأولى في السعودية — لشركات التطوير العقاري.</div>
+      </div>
+      <div class="foot-col">
+        <div class="foot-ct" data-ar="المنتج" data-en="Product">المنتج</div>
+        <div class="foot-link" data-ar="المميزات" data-en="Features">المميزات</div>
+        <div class="foot-link" data-ar="الأسعار" data-en="Pricing">الأسعار</div>
+        <div class="foot-link" data-ar="كيف يعمل" data-en="How it works">كيف يعمل</div>
+      </div>
+      <div class="foot-col">
+        <div class="foot-ct" data-ar="الشركة" data-en="Company">الشركة</div>
+        <div class="foot-link" data-ar="من نحن" data-en="About">من نحن</div>
+        <div class="foot-link" data-ar="تواصل معنا" data-en="Contact">تواصل معنا</div>
+        <div class="foot-link" data-ar="المدونة" data-en="Blog">المدونة</div>
+      </div>
+      <div class="foot-col">
+        <div class="foot-ct" data-ar="قانوني" data-en="Legal">قانوني</div>
+        <div class="foot-link" data-ar="الشروط والأحكام" data-en="Terms">الشروط والأحكام</div>
+        <div class="foot-link" data-ar="سياسة الخصوصية" data-en="Privacy">سياسة الخصوصية</div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div data-ar="© ٢٠٢٦ Somod. جميع الحقوق محفوظة." data-en="© 2026 Somod. All rights reserved.">© ٢٠٢٦ Somod. جميع الحقوق محفوظة.</div>
+      <div data-ar="صُنع في السعودية 🇸🇦" data-en="Made in Saudi Arabia 🇸🇦">صُنع في السعودية 🇸🇦</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ===== Language toggle =====
+let lang='ar';
+const langToggle=document.getElementById('langToggle');
+const langLabel=document.getElementById('langLabel');
+function setLang(l){
+  lang=l;
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==='ar'?'rtl':'ltr';
+  document.body.dir=l==='ar'?'rtl':'ltr';
+  langLabel.textContent=l==='ar'?'EN':'ع';
+  document.querySelectorAll('[data-ar]').forEach(el=>{
+    const val=l==='ar'?el.getAttribute('data-ar'):el.getAttribute('data-en');
+    if(val!==null) el.textContent=val;
+  });
+  // arrows flip
+  document.querySelectorAll('.arrow').forEach(a=>a.textContent=l==='ar'?'←':'→');
+}
+langToggle.addEventListener('click',()=>setLang(lang==='ar'?'en':'ar'));
+
+// ===== Nav scroll =====
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>20);
+});
+
+// ===== Reveal on scroll =====
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+},{threshold:0.12});
+document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
+
+// ===== Demo animation =====
+(function(){
+  const screens=document.querySelectorAll('.screen');
+  const dots=document.querySelectorAll('.pd');
+  const urls=['app.somod.sa/dashboard','app.somod.sa/maintenance','app.somod.sa/home'];
+  const winUrl=document.getElementById('winUrl');
+  let cur=0,timer;
+
+  function toArabicNum(n){return n.toLocaleString('ar-EG');}
+  function animateCounts(){
+    document.querySelectorAll('.screen[data-screen="0"] .kp-n[data-count]').forEach(el=>{
+      const target=+el.dataset.count,suffix=el.dataset.suffix||'';
+      let v=0;const step=Math.max(1,Math.ceil(target/28));
+      const iv=setInterval(()=>{v+=step;if(v>=target){v=target;clearInterval(iv);}el.textContent=toArabicNum(v)+suffix;},28);
+    });
+  }
+  function animateBars(){
+    document.querySelectorAll('#scBars .scb').forEach((b,i)=>{setTimeout(()=>{b.style.height=b.dataset.h+'px';},i*80);});
+  }
+  function resetBars(){document.querySelectorAll('#scBars .scb').forEach(b=>b.style.height='3px');}
+
+  function show(i){
+    cur=i;
+    screens.forEach((s,j)=>s.classList.toggle('active',j===i));
+    dots.forEach((d,j)=>d.classList.toggle('on',j===i));
+    winUrl.textContent=urls[i];
+    if(i===0){resetBars();setTimeout(()=>{animateCounts();animateBars();},300);}
+  }
+  function next(){show((cur+1)%screens.length);}
+  function start(){timer=setInterval(next,3800);}
+  function reset(){clearInterval(timer);start();}
+
+  dots.forEach(d=>d.addEventListener('click',()=>{show(+d.dataset.dot);reset();}));
+
+  // initial
+  setTimeout(()=>{animateCounts();animateBars();},600);
+  start();
+})();
+</script>
+</body>
+</html>
