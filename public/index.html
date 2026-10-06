@@ -125,6 +125,54 @@ body[dir="ltr"] .m-txt{text-align:left}
 .m-badge{display:inline-block;font-size:10px;color:var(--accent2);background:rgba(0,167,111,0.1);border:0.5px solid rgba(0,167,111,0.25);padding:4px 12px;border-radius:20px;margin-bottom:12px}
 .m-title{font-size:18px;font-weight:700;line-height:1.3;margin-bottom:10px}
 .m-sub{font-size:12px;color:var(--muted);line-height:1.6}
+/* reports screen */
+.rp-bars{display:flex;align-items:flex-end;gap:10px;height:78px}
+.rp-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:5px}
+.rp-bar{width:100%;max-width:26px;border-radius:4px 4px 2px 2px;background:rgba(37,99,235,0.55);transform-origin:bottom}
+.rp-bar.hl{background:var(--accent)}
+.rp-lbl{font-size:8px;color:var(--faint)}
+.screen.active .rp-bar{animation:rpGrow .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rpGrow{from{transform:scaleY(.05)}to{transform:scaleY(1)}}
+.rp-sat{display:flex;flex-direction:column}
+.rp-big{font-size:28px;font-weight:800;color:var(--accent2);letter-spacing:-0.5px}
+.rp-meter{height:6px;border-radius:4px;background:rgba(255,255,255,0.06);overflow:hidden;margin:8px 0 6px}
+.rp-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(.92);transform-origin:right}
+body[dir="ltr"] .rp-fill{transform-origin:left}
+.screen.active .rp-fill{animation:rpFill 1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rpFill{from{transform:scaleX(0)}to{transform:scaleX(.92)}}
+.rp-delta{font-size:9px;color:var(--accent2)}
+.rp-tops{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.rp-top{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:9px 11px}
+.rp-medal{font-size:18px}
+.rp-tn{font-size:11px;font-weight:600}
+.rp-ts{font-size:9px;color:var(--faint);margin-top:1px}
+/* technician screen */
+.tk-task{background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 9px;margin-bottom:6px;border-inline-start:3px solid transparent}
+.tk-row{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.tk-tt{font-size:9px;font-weight:600}
+.tk-pri{font-size:7px;font-weight:600;padding:1px 6px;border-radius:10px;flex-shrink:0}
+.tk-ts{font-size:7.5px;color:var(--faint);margin-top:3px}
+.tk-start{background:linear-gradient(145deg,#fbbf24,#d97706);color:#1a1205;font-size:9px;font-weight:700;padding:7px;border-radius:7px;text-align:center;margin-top:8px;box-shadow:0 4px 14px rgba(245,158,11,0.3)}
+/* vendor screen */
+.vd-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:10px}
+.vd-list{display:flex;flex-direction:column;gap:7px}
+.vd-job{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,0.03);border-radius:9px;padding:8px 10px}
+.vd-job .req-ic{width:26px;height:26px;font-size:12px}
+.vd-tech{display:flex;align-items:center;gap:8px;font-size:11px}
+.vd-av{width:22px;height:22px;border-radius:50%;background:rgba(0,167,111,0.15);color:var(--accent2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.vd-tn{flex:1}
+.vd-st{font-size:8px;padding:2px 8px;border-radius:10px;font-weight:600}
+.vd-st::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:currentColor;margin-inline-end:4px;vertical-align:middle}
+.vd-st.ok{background:rgba(0,167,111,0.15);color:#00d492}
+.vd-st.busy{background:rgba(245,158,11,0.15);color:#fbbf24}
+.vd-assign{background:var(--accent);color:#fff;font-size:10px;font-weight:600;padding:8px;border-radius:8px;text-align:center;margin-top:12px}
+/* enterprise price + contact section */
+.plan-price.sm{font-size:24px;line-height:1.5}
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.contact-val{display:inline-block;font-size:13px;color:var(--accent2);text-decoration:none;direction:ltr;unicode-bidi:isolate}
+a.contact-val:hover{text-decoration:underline}
+/* demo list text reads from the start edge, not hero-centered */
+.sc-head,.req-info,.vd-tn,.rp-top,.tk-task{text-align:start}
 .prog{display:flex;justify-content:center;gap:7px;margin-top:20px;position:relative;z-index:4}
 .pd{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.15);transition:all .4s;cursor:pointer;border:none;padding:0}
 .pd.on{width:22px;border-radius:4px;background:var(--accent)}
@@ -252,8 +300,12 @@ html[dir="ltr"] .step-line{left:-50%}
   .step-line{display:none}
   .plan.featured{transform:none}
   .m-screen{flex-direction:column;gap:16px}
-  .screens{height:auto;min-height:360px}
+  .screens{height:auto;min-height:540px}
   .sc-charts{grid-template-columns:1fr}
+}
+@media(max-width:880px){
+  .vd-grid,.contact-grid{grid-template-columns:1fr}
+  .rp-tops{grid-template-columns:1fr}
 }
 @media(max-width:560px){
   .sc-kpis{grid-template-columns:repeat(2,1fr)}
@@ -340,10 +392,10 @@ html[dir="ltr"] #scrollProgress{transform-origin:left}
               <div class="sc-period"><div class="sc-po" data-ar="سنة" data-en="Year">سنة</div><div class="sc-po" data-ar="ربع" data-en="Qtr">ربع</div><div class="sc-po on" data-ar="شهر" data-en="Month">شهر</div></div>
             </div>
             <div class="sc-kpis">
-              <div class="kp"><div class="kp-top" style="background:#f59e0b"></div><div class="kp-row"><div class="kp-n" data-count="47">٠</div><div class="kp-badge">↑١٢٪</div></div><div class="kp-l" data-ar="طلبات نشطة" data-en="Active">طلبات نشطة</div></div>
-              <div class="kp"><div class="kp-top" style="background:#00a76f"></div><div class="kp-row"><div class="kp-n" data-count="94" data-suffix="٪">٠</div><div class="kp-badge">↑٣٪</div></div><div class="kp-l" data-ar="معدل الإنجاز" data-en="Resolution">معدل الإنجاز</div></div>
-              <div class="kp"><div class="kp-top" style="background:#7c3aed"></div><div class="kp-row"><div class="kp-n">٤.٣</div><div class="kp-badge">↑٠.٢</div></div><div class="kp-l" data-ar="متوسط التقييم" data-en="Rating">متوسط التقييم</div></div>
-              <div class="kp"><div class="kp-top" style="background:#2563eb"></div><div class="kp-row"><div class="kp-n" data-count="128">٠</div><div class="kp-badge">↑٨٪</div></div><div class="kp-l" data-ar="تم الحل" data-en="Resolved">تم الحل</div></div>
+              <div class="kp"><div class="kp-top" style="background:#f59e0b"></div><div class="kp-row"><div class="kp-n" data-count="47">٠</div><div class="kp-badge" data-ar="↑١٢٪" data-en="↑12%">↑١٢٪</div></div><div class="kp-l" data-ar="طلبات نشطة" data-en="Active">طلبات نشطة</div></div>
+              <div class="kp"><div class="kp-top" style="background:#00a76f"></div><div class="kp-row"><div class="kp-n" data-count="94" data-pct>٠</div><div class="kp-badge" data-ar="↑٣٪" data-en="↑3%">↑٣٪</div></div><div class="kp-l" data-ar="معدل الإنجاز" data-en="Resolution">معدل الإنجاز</div></div>
+              <div class="kp"><div class="kp-top" style="background:#7c3aed"></div><div class="kp-row"><div class="kp-n" data-ar="٤.٣" data-en="4.3">٤.٣</div><div class="kp-badge" data-ar="↑٠.٢" data-en="↑0.2">↑٠.٢</div></div><div class="kp-l" data-ar="متوسط التقييم" data-en="Rating">متوسط التقييم</div></div>
+              <div class="kp"><div class="kp-top" style="background:#2563eb"></div><div class="kp-row"><div class="kp-n" data-count="128">٠</div><div class="kp-badge" data-ar="↑٨٪" data-en="↑8%">↑٨٪</div></div><div class="kp-l" data-ar="تم الحل" data-en="Resolved">تم الحل</div></div>
             </div>
             <div class="sc-charts">
               <div class="sc-chart">
@@ -395,6 +447,56 @@ html[dir="ltr"] #scrollProgress{transform-origin:left}
               </div>
             </div>
           </div>
+          <!-- Screen 3: Reports -->
+          <div class="screen" data-screen="3">
+            <div class="sc-head"><div><div class="sc-title" data-ar="التقارير والتحليلات" data-en="Reports &amp; Analytics">التقارير والتحليلات</div><div class="sc-sub" data-ar="آخر ٣٠ يوماً — كل المشاريع" data-en="Last 30 days — all projects">آخر ٣٠ يوماً — كل المشاريع</div></div></div>
+            <div class="sc-charts">
+              <div class="sc-chart">
+                <div class="scc-t" data-ar="أداء الفنيين — طلبات منجزة" data-en="Technician performance — jobs done">أداء الفنيين — طلبات منجزة</div>
+                <div class="rp-bars"><div class="rp-col"><div class="rp-bar hl" style="height:92%"></div><div class="rp-lbl" data-ar="خالد" data-en="Khalid">خالد</div></div><div class="rp-col"><div class="rp-bar" style="height:78%"></div><div class="rp-lbl" data-ar="سعيد" data-en="Saeed">سعيد</div></div><div class="rp-col"><div class="rp-bar" style="height:71%"></div><div class="rp-lbl" data-ar="ماجد" data-en="Majed">ماجد</div></div><div class="rp-col"><div class="rp-bar" style="height:63%"></div><div class="rp-lbl" data-ar="فيصل" data-en="Faisal">فيصل</div></div><div class="rp-col"><div class="rp-bar" style="height:54%"></div><div class="rp-lbl" data-ar="عمر" data-en="Omar">عمر</div></div></div>
+              </div>
+              <div class="sc-chart rp-sat">
+                <div class="scc-t" data-ar="رضا الملّاك" data-en="Owner satisfaction">رضا الملّاك</div>
+                <div class="rp-big" data-ar="٩٢٪" data-en="92%">٩٢٪</div>
+                <div class="rp-meter"><div class="rp-fill"></div></div>
+                <div class="rp-delta" data-ar="↑ ٦٪ عن الشهر الماضي" data-en="↑ 6% vs last month">↑ ٦٪ عن الشهر الماضي</div>
+              </div>
+            </div>
+            <div class="rp-tops"><div class="rp-top"><span class="rp-medal">🥇</span><div><div class="rp-tn" data-ar="خالد العمري" data-en="Khalid Al-Omari">خالد العمري</div><div class="rp-ts" data-ar="٤.٩ · ٦٢ طلب" data-en="4.9 · 62 jobs">٤.٩ · ٦٢ طلب</div></div></div><div class="rp-top"><span class="rp-medal">🥈</span><div><div class="rp-tn" data-ar="سعيد الحربي" data-en="Saeed Al-Harbi">سعيد الحربي</div><div class="rp-ts" data-ar="٤.٨ · ٥٤ طلب" data-en="4.8 · 54 jobs">٤.٨ · ٥٤ طلب</div></div></div><div class="rp-top"><span class="rp-medal">🥉</span><div><div class="rp-tn" data-ar="ماجد الشهري" data-en="Majed Al-Shehri">ماجد الشهري</div><div class="rp-ts" data-ar="٤.٧ · ٤٩ طلب" data-en="4.7 · 49 jobs">٤.٧ · ٤٩ طلب</div></div></div></div>
+          </div>
+          <!-- Screen 4: Technician -->
+          <div class="screen" data-screen="4">
+            <div class="m-screen">
+              <div class="phone">
+                <div class="ph-top"><div class="ph-greet" data-ar="مرحباً، خالد 👷" data-en="Hi, Khalid 👷">مرحباً، خالد 👷</div><div class="ph-unit" data-ar="٣ مهام اليوم" data-en="3 tasks today">٣ مهام اليوم</div></div>
+                <div class="ph-body">
+                  <div class="tk-task" style="border-inline-start-color:#ef4444"><div class="tk-row"><span class="tk-tt" data-ar="تسريب مياه — مطبخ" data-en="Water leak — kitchen">تسريب مياه — مطبخ</span><span class="tk-pri" style="color:#ef4444;background:#ef444422" data-ar="عاجل" data-en="Urgent">عاجل</span></div><div class="tk-ts" data-ar="وحدة B-05 · ٩:٠٠ ص" data-en="Unit B-05 · 9:00 AM">وحدة B-05 · ٩:٠٠ ص</div></div><div class="tk-task" style="border-inline-start-color:#f59e0b"><div class="tk-row"><span class="tk-tt" data-ar="تكييف لا يبرّد" data-en="AC not cooling">تكييف لا يبرّد</span><span class="tk-pri" style="color:#f59e0b;background:#f59e0b22" data-ar="متوسط" data-en="Medium">متوسط</span></div><div class="tk-ts" data-ar="وحدة A-12 · ١١:٣٠ ص" data-en="Unit A-12 · 11:30 AM">وحدة A-12 · ١١:٣٠ ص</div></div><div class="tk-task" style="border-inline-start-color:#f59e0b"><div class="tk-row"><span class="tk-tt" data-ar="مفتاح كهرباء تالف" data-en="Faulty switch">مفتاح كهرباء تالف</span><span class="tk-pri" style="color:#f59e0b;background:#f59e0b22" data-ar="متوسط" data-en="Medium">متوسط</span></div><div class="tk-ts" data-ar="وحدة C-21 · ٢:٠٠ م" data-en="Unit C-21 · 2:00 PM">وحدة C-21 · ٢:٠٠ م</div></div>
+                  <div class="tk-start" data-ar="▶ بدء العمل" data-en="▶ Start Job">▶ بدء العمل</div>
+                </div>
+                <div class="ph-nav"><span class="ph-ni on">☰</span><span class="ph-ni">📷</span><span class="ph-ni">🗺</span><span class="ph-ni">🔔</span></div>
+              </div>
+              <div class="m-txt">
+                <div class="m-badge" data-ar="للفنيين" data-en="For Technicians">للفنيين</div>
+                <div class="m-title" data-ar="تطبيق الفني" data-en="Technician App">تطبيق الفني</div>
+                <div class="m-sub" data-ar="مهام ميدانية واضحة، صور، وتشخيص — كل ذلك من الجوال" data-en="Clear field tasks, photos, and diagnosis — all from mobile">مهام ميدانية واضحة، صور، وتشخيص — كل ذلك من الجوال</div>
+              </div>
+            </div>
+          </div>
+          <!-- Screen 5: Vendor -->
+          <div class="screen" data-screen="5">
+            <div class="sc-head"><div><div class="sc-title" data-ar="بوابة الموردين" data-en="Vendor Portal">بوابة الموردين</div><div class="sc-sub" data-ar="شركة الإتقان للصيانة" data-en="Al-Itqan Maintenance Co.">شركة الإتقان للصيانة</div></div></div>
+            <div class="vd-grid">
+              <div class="sc-chart">
+                <div class="scc-t" data-ar="مهام واردة" data-en="Incoming jobs">مهام واردة</div>
+                <div class="vd-list"><div class="vd-job"><div class="req-ic" style="background:rgba(37,99,235,0.15)">❄️</div><div class="req-info"><div class="req-title" data-ar="تكييف غرفة النوم" data-en="Bedroom AC">تكييف غرفة النوم</div><div class="req-sub" data-ar="النخيل · A-12" data-en="Nakheel · A-12">النخيل · A-12</div></div><span class="chip" style="background:rgba(245,158,11,0.15);color:#fbbf24" data-ar="جديد" data-en="New">جديد</span></div><div class="vd-job"><div class="req-ic" style="background:rgba(0,167,111,0.15)">💧</div><div class="req-info"><div class="req-title" data-ar="تسريب الحمام" data-en="Bathroom leak">تسريب الحمام</div><div class="req-sub" data-ar="الياسمين · B-05" data-en="Yasmin · B-05">الياسمين · B-05</div></div><span class="chip" style="background:rgba(245,158,11,0.15);color:#fbbf24" data-ar="جديد" data-en="New">جديد</span></div><div class="vd-job"><div class="req-ic" style="background:rgba(124,58,237,0.15)">⚡</div><div class="req-info"><div class="req-title" data-ar="كهرباء المطبخ" data-en="Kitchen electrical">كهرباء المطبخ</div><div class="req-sub" data-ar="النخيل · C-21" data-en="Nakheel · C-21">النخيل · C-21</div></div><span class="chip" style="background:rgba(245,158,11,0.15);color:#fbbf24" data-ar="جديد" data-en="New">جديد</span></div></div>
+              </div>
+              <div class="sc-chart">
+                <div class="scc-t" data-ar="الفنيون" data-en="Technicians">الفنيون</div>
+                <div class="vd-list"><div class="vd-tech"><span class="vd-av">أ</span><span class="vd-tn" data-ar="أحمد" data-en="Ahmed">أحمد</span><span class="vd-st ok" data-ar="متاح" data-en="Available">متاح</span></div><div class="vd-tech"><span class="vd-av">ي</span><span class="vd-tn" data-ar="يوسف" data-en="Yousef">يوسف</span><span class="vd-st busy" data-ar="مشغول" data-en="Busy">مشغول</span></div><div class="vd-tech"><span class="vd-av">ف</span><span class="vd-tn" data-ar="فهد" data-en="Fahad">فهد</span><span class="vd-st ok" data-ar="متاح" data-en="Available">متاح</span></div><div class="vd-tech"><span class="vd-av">ب</span><span class="vd-tn" data-ar="بدر" data-en="Badr">بدر</span><span class="vd-st busy" data-ar="مشغول" data-en="Busy">مشغول</span></div></div>
+                <div class="vd-assign" data-ar="+ تعيين فني" data-en="+ Assign Technician">+ تعيين فني</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="demo-reflect"></div>
@@ -403,6 +505,9 @@ html[dir="ltr"] #scrollProgress{transform-origin:left}
       <button class="pd on" data-dot="0"></button>
       <button class="pd" data-dot="1"></button>
       <button class="pd" data-dot="2"></button>
+      <button class="pd" data-dot="3"></button>
+      <button class="pd" data-dot="4"></button>
+      <button class="pd" data-dot="5"></button>
     </div>
   </div>
 </header>
@@ -581,7 +686,7 @@ html[dir="ltr"] #scrollProgress{transform-origin:left}
       </div>
       <div class="plan reveal d3">
         <div class="plan-name" data-ar="المؤسسات" data-en="Enterprise">المؤسسات</div>
-        <div class="plan-price" data-ar="حسب الطلب" data-en="Custom">حسب الطلب</div>
+        <div class="plan-price sm" data-ar="تواصل للتسعير" data-en="Contact for Pricing">تواصل للتسعير</div>
         <div class="plan-desc" data-ar="للشركات الكبرى — وحدات غير محدودة" data-en="For enterprises — unlimited units">للشركات الكبرى — وحدات غير محدودة</div>
         <div class="plan-feats">
           <div class="pf"><span class="pf-check">✓</span> <span data-ar="وحدات غير محدودة" data-en="Unlimited units">وحدات غير محدودة</span></div>
@@ -613,6 +718,22 @@ html[dir="ltr"] #scrollProgress{transform-origin:left}
 </section>
 
 <!-- FOOTER -->
+<!-- CONTACT -->
+<section class="sec" id="contact-section">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="sec-tag" data-ar="تواصل معنا" data-en="Get in touch">تواصل معنا</div>
+      <h2 class="sec-title" data-ar="جاهزون لمساعدتك" data-en="We're here to help">جاهزون لمساعدتك</h2>
+    </div>
+    <!-- Placeholder contact details: replace the email, phone and address below with the real ones -->
+    <div class="contact-grid">
+      <div class="sc-item reveal d1"><div class="sc-ic">📧</div><div class="sc-name" data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</div><a class="contact-val" href="mailto:sales@somod.sa">sales@somod.sa</a></div>
+      <div class="sc-item reveal d2"><div class="sc-ic">📞</div><div class="sc-name" data-ar="الهاتف" data-en="Phone">الهاتف</div><a class="contact-val" href="tel:+9665XXXXXXXX">+966 5X XXX XXXX</a></div>
+      <div class="sc-item reveal d3"><div class="sc-ic">📍</div><div class="sc-name" data-ar="العنوان" data-en="Address">العنوان</div><div class="sc-d" data-ar="الرياض، المملكة العربية السعودية" data-en="Riyadh, Saudi Arabia">الرياض، المملكة العربية السعودية</div></div>
+    </div>
+  </div>
+</section>
+
 <footer class="footer">
   <div class="container">
     <div class="foot-grid">
@@ -661,6 +782,7 @@ function setLang(l){
   });
   // arrows flip
   document.querySelectorAll('.arrow').forEach(a=>a.textContent=l==='ar'?'←':'→');
+  document.dispatchEvent(new Event('langchange'));
 }
 langToggle.addEventListener('click',()=>setLang(lang==='ar'?'en':'ar'));
 
@@ -680,18 +802,25 @@ document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
 (function(){
   const screens=document.querySelectorAll('.screen');
   const dots=document.querySelectorAll('.pd');
-  const urls=['app.somod.sa/dashboard','app.somod.sa/maintenance','app.somod.sa/home'];
+  const urls=['app.somod.sa/dashboard','app.somod.sa/maintenance','app.somod.sa/home','app.somod.sa/reports','app.somod.sa/technician','app.somod.sa/vendor'];
   const winUrl=document.getElementById('winUrl');
   let cur=0,timer;
 
-  function toArabicNum(n){return n.toLocaleString('ar-EG');}
+  // Digits and % sign follow the current language
+  function fmtKpi(el,v){
+    const n=v.toLocaleString(lang==='ar'?'ar-EG':'en-US');
+    return el.hasAttribute('data-pct')?n+(lang==='ar'?'٪':'%'):n;
+  }
+  const kpis=document.querySelectorAll('.screen[data-screen="0"] .kp-n[data-count]');
   function animateCounts(){
-    document.querySelectorAll('.screen[data-screen="0"] .kp-n[data-count]').forEach(el=>{
-      const target=+el.dataset.count,suffix=el.dataset.suffix||'';
+    kpis.forEach(el=>{
+      const target=+el.dataset.count;
       let v=0;const step=Math.max(1,Math.ceil(target/28));
-      const iv=setInterval(()=>{v+=step;if(v>=target){v=target;clearInterval(iv);}el.textContent=toArabicNum(v)+suffix;},28);
+      clearInterval(el._iv);
+      el._iv=setInterval(()=>{v+=step;if(v>=target){v=target;clearInterval(el._iv);}el.dataset.v=v;el.textContent=fmtKpi(el,v);},28);
     });
   }
+  document.addEventListener('langchange',()=>kpis.forEach(el=>{el.textContent=fmtKpi(el,+(el.dataset.v||0));}));
   function animateBars(){
     document.querySelectorAll('#scBars .scb').forEach((b,i)=>{setTimeout(()=>{b.style.height=b.dataset.h+'px';},i*80);});
   }
