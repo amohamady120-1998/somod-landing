@@ -313,6 +313,39 @@ html[dir="ltr"] .step-line{left:-50%}
   .nav{padding:14px 20px}
 }
 
+/* ===== Contact modal ===== */
+.cm-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility 0s linear .25s}
+.cm-overlay.open{opacity:1;visibility:visible;transition:opacity .25s ease}
+.cm-box{position:relative;width:100%;max-width:480px;max-height:calc(100vh - 32px);overflow-y:auto;background:#121a2a;border:1px solid rgba(0,167,111,0.3);border-radius:20px;padding:28px 26px 24px;box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(0,167,111,0.06);transform:translateY(12px) scale(.96);opacity:0;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.cm-overlay.open .cm-box{transform:none;opacity:1}
+.cm-close{position:absolute;top:14px;inset-inline-end:14px;width:32px;height:32px;border-radius:9px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--muted);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .15s,background .15s}
+.cm-close:hover{color:#fff;background:rgba(255,255,255,0.08)}
+.cm-title{font-size:21px;font-weight:700;margin-bottom:6px;padding-inline-end:40px}
+.cm-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px}
+.cm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cm-field{display:flex;flex-direction:column;gap:6px}
+.cm-field.full{grid-column:1/-1}
+.cm-label{font-size:12px;font-weight:500;color:rgba(255,255,255,0.75)}
+.cm-req{color:var(--accent2)}
+.cm-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:11px 12px;color:#fff;font-family:inherit;font-size:13px;outline:none;transition:border-color .15s,background .15s}
+.cm-input::placeholder{color:var(--faint)}
+.cm-input:focus{border-color:var(--accent);background:rgba(0,167,111,0.05)}
+.cm-input[type=email],.cm-input[type=tel]{direction:ltr;text-align:start}
+body[dir="rtl"] .cm-input[type=email],body[dir="rtl"] .cm-input[type=tel]{text-align:right}
+select.cm-input{appearance:none;-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%23ffffff' stroke-opacity='.55' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 12px center;padding-left:34px}
+body[dir="ltr"] select.cm-input{background-position:right 12px center;padding-left:12px;padding-right:34px}
+select.cm-input option{background:#121a2a;color:#fff}
+textarea.cm-input{resize:vertical;min-height:84px}
+.cm-submit{width:100%;margin-top:18px;background:linear-gradient(145deg,var(--accent2),var(--accent3));color:#fff;border:none;border-radius:12px;padding:14px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 10px 30px rgba(0,167,111,0.3);transition:transform .15s,opacity .15s}
+.cm-submit:hover{transform:translateY(-1px)}
+.cm-submit:disabled{opacity:.6;cursor:wait;transform:none}
+.cm-status{display:none;margin-top:14px;padding:11px 13px;border-radius:10px;font-size:13px;line-height:1.5}
+.cm-status.ok{display:block;background:rgba(0,167,111,0.12);border:1px solid rgba(0,167,111,0.3);color:#34d399}
+.cm-status.err{display:block;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);color:#f87171}
+.cm-status a{color:inherit}
+.cm-hp{position:absolute;left:-9999px;opacity:0;pointer-events:none}
+body.cm-lock{overflow:hidden}
+@media(max-width:560px){.cm-grid{grid-template-columns:1fr}.cm-box{padding:24px 18px 20px}}
 /* ===== Motion ===== */
 #scrollProgress{position:fixed;top:0;left:0;right:0;height:3px;z-index:200;background:linear-gradient(90deg,#00a76f,#00d492);transform:scaleX(0);transform-origin:right;will-change:transform;pointer-events:none}
 html[dir="ltr"] #scrollProgress{transform-origin:left}
@@ -348,7 +381,7 @@ html[dir="ltr"] #scrollProgress{transform-origin:left}
   </div>
   <div class="nav-right">
     <button class="nav-lang" id="langToggle">🌐 <span id="langLabel">EN</span></button>
-    <button class="nav-cta" onclick="window.location.href='mailto:sales@somod.sa?subject='+encodeURIComponent('طلب عرض توضيحي - Somod')" data-ar="اطلب عرضاً" data-en="Request Demo">اطلب عرضاً</button>
+    <button class="nav-cta" onclick="openContactModal()" data-ar="اطلب عرضاً" data-en="Request Demo">اطلب عرضاً</button>
   </div>
 </nav>
 
@@ -366,7 +399,7 @@ html[dir="ltr"] #scrollProgress{transform-origin:left}
     </h1>
     <p class="hero-sub reveal d2" data-ar="في عالم العقار، رضا الملّاك بعد التسليم هو ما يصنع سمعتك. Somod يمنحك التحكم الكامل في الصيانة والضمانات — وتجربة تجعل ملّاكك سفراءً لمشاريعك القادمة." data-en="In real estate, owner satisfaction after handover is what builds your reputation. Somod gives you full control over maintenance and warranties — and an experience that turns your owners into ambassadors for your next project.">في عالم العقار، رضا الملّاك بعد التسليم هو ما يصنع سمعتك. Somod يمنحك التحكم الكامل في الصيانة والضمانات — وتجربة تجعل ملّاكك سفراءً لمشاريعك القادمة.</p>
     <div class="hero-ctas reveal d3">
-      <button class="btn-primary" onclick="window.location.href='mailto:sales@somod.sa?subject='+encodeURIComponent('طلب عرض توضيحي - Somod')"><span data-ar="اطلب عرضاً توضيحياً" data-en="Request a Demo">اطلب عرضاً توضيحياً</span> <span class="arrow">←</span></button>
+      <button class="btn-primary" onclick="openContactModal()"><span data-ar="اطلب عرضاً توضيحياً" data-en="Request a Demo">اطلب عرضاً توضيحياً</span> <span class="arrow">←</span></button>
       <button class="btn-ghost" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})"><span class="play-ic">▶</span> <span data-ar="شاهد كيف يعمل" data-en="See how it works">شاهد كيف يعمل</span></button>
     </div>
     <div class="hero-note reveal d4">
@@ -694,7 +727,7 @@ html[dir="ltr"] #scrollProgress{transform-origin:left}
           <div class="pf"><span class="pf-check">✓</span> <span data-ar="علامة تجارية خاصة" data-en="White-label branding">علامة تجارية خاصة</span></div>
           <div class="pf"><span class="pf-check">✓</span> <span data-ar="مدير حساب مخصص" data-en="Dedicated account manager">مدير حساب مخصص</span></div>
         </div>
-        <div class="plan-cta ghost" onclick="window.location.href='mailto:sales@somod.sa'" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</div>
+        <div class="plan-cta ghost" onclick="openContactModal()" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</div>
       </div>
     </div>
   </div>
@@ -709,8 +742,8 @@ html[dir="ltr"] #scrollProgress{transform-origin:left}
         <h2 class="cta-title" data-ar="ارتقِ بسمعة مشاريعك إلى مستوى جديد" data-en="Take your projects&#x27; reputation to the next level">ارتقِ بسمعة مشاريعك إلى مستوى جديد</h2>
         <p class="cta-sub" data-ar="انضم إلى نخبة المطوّرين الذين يديرون ما بعد التسليم باحترافية. احجز عرضاً توضيحياً مخصصاً لشركتك." data-en="Join the elite developers who manage post-handover professionally. Book a demo tailored to your company.">انضم إلى نخبة المطوّرين الذين يديرون ما بعد التسليم باحترافية. احجز عرضاً توضيحياً مخصصاً لشركتك.</p>
         <div class="cta-btns">
-          <button class="cta-primary" onclick="window.location.href='mailto:sales@somod.sa?subject='+encodeURIComponent('طلب عرض توضيحي - Somod')"><span data-ar="اطلب عرضاً توضيحياً" data-en="Request a Demo">اطلب عرضاً توضيحياً</span> ←</button>
-          <button class="cta-ghost" onclick="window.location.href='mailto:sales@somod.sa'" data-ar="تواصل مع المبيعات" data-en="Talk to Sales">تواصل مع المبيعات</button>
+          <button class="cta-primary" onclick="openContactModal()"><span data-ar="اطلب عرضاً توضيحياً" data-en="Request a Demo">اطلب عرضاً توضيحياً</span> ←</button>
+          <button class="cta-ghost" onclick="openContactModal()" data-ar="تواصل مع المبيعات" data-en="Talk to Sales">تواصل مع المبيعات</button>
         </div>
       </div>
     </div>
@@ -750,7 +783,7 @@ html[dir="ltr"] #scrollProgress{transform-origin:left}
       <div class="foot-col">
         <div class="foot-ct" data-ar="الشركة" data-en="Company">الشركة</div>
         <div class="foot-link" onclick="window.scrollTo({top:0,behavior:'smooth'})" data-ar="من نحن" data-en="About">من نحن</div>
-        <div class="foot-link" onclick="window.location.href='mailto:info@somod.sa'" data-ar="تواصل معنا" data-en="Contact">تواصل معنا</div>
+        <div class="foot-link" onclick="openContactModal()" data-ar="تواصل معنا" data-en="Contact">تواصل معنا</div>
       </div>
       <div class="foot-col">
         <div class="foot-ct" data-ar="قانوني" data-en="Legal">قانوني</div>
@@ -764,6 +797,34 @@ html[dir="ltr"] #scrollProgress{transform-origin:left}
     </div>
   </div>
 </footer>
+
+<!-- CONTACT MODAL -->
+<div class="cm-overlay" id="contactModal" aria-hidden="true">
+  <div class="cm-box" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+    <button type="button" class="cm-close" id="cmClose" aria-label="إغلاق">×</button>
+    <h3 class="cm-title" id="cmTitle" data-ar="اطلب عرضاً توضيحياً" data-en="Request a Demo">اطلب عرضاً توضيحياً</h3>
+    <p class="cm-sub" data-ar="املأ النموذج وسيتواصل معك فريقنا خلال 24 ساعة" data-en="Fill the form and our team will reach out within 24 hours">املأ النموذج وسيتواصل معك فريقنا خلال 24 ساعة</p>
+    <form id="contactForm">
+      <div class="cm-grid">
+        <label class="cm-field"><span class="cm-label"><span data-ar="الاسم الكامل" data-en="Full Name">الاسم الكامل</span> <span class="cm-req">*</span></span><input class="cm-input" name="name" required autocomplete="name"></label>
+        <label class="cm-field"><span class="cm-label"><span data-ar="اسم الشركة" data-en="Company">اسم الشركة</span> <span class="cm-req">*</span></span><input class="cm-input" name="company" required autocomplete="organization"></label>
+        <label class="cm-field"><span class="cm-label"><span data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</span> <span class="cm-req">*</span></span><input class="cm-input" type="email" name="email" required autocomplete="email" placeholder="name@company.com"></label>
+        <label class="cm-field"><span class="cm-label"><span data-ar="رقم الجوال" data-en="Phone">رقم الجوال</span> <span class="cm-req">*</span></span><input class="cm-input" type="tel" name="phone" required autocomplete="tel" placeholder="05XXXXXXXX" pattern="[+0-9 ()-]{8,20}"></label>
+        <label class="cm-field full"><span class="cm-label" data-ar="عدد الوحدات التقريبي" data-en="Approx. units">عدد الوحدات التقريبي</span>
+          <select class="cm-input" name="units">
+            <option value="&lt;50" data-ar="أقل من ٥٠ وحدة" data-en="Under 50 units">أقل من ٥٠ وحدة</option>
+            <option value="50-500" data-ar="من ٥٠ إلى ٥٠٠ وحدة" data-en="50–500 units">من ٥٠ إلى ٥٠٠ وحدة</option>
+            <option value="&gt;500" data-ar="أكثر من ٥٠٠ وحدة" data-en="Over 500 units">أكثر من ٥٠٠ وحدة</option>
+          </select>
+        </label>
+        <label class="cm-field full"><span class="cm-label"><span data-ar="رسالة" data-en="Message">رسالة</span> <span style="color:var(--faint)" data-ar="(اختياري)" data-en="(optional)">(اختياري)</span></span><textarea class="cm-input" name="message" rows="3"></textarea></label>
+      </div>
+      <input type="checkbox" name="botcheck" class="cm-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button type="submit" class="cm-submit" id="cmSubmit" data-ar="إرسال الطلب" data-en="Submit Request">إرسال الطلب</button>
+      <div class="cm-status" id="cmStatus" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
 
 <script>
 // ===== Language toggle =====
@@ -909,6 +970,75 @@ const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches
     card.addEventListener('mouseleave',()=>{cancelAnimationFrame(raf);card.style.transform='';});
   });
 })();
+
+// ===== Contact modal (Web3Forms) =====
+// TODO: replace with the real access key from https://web3forms.com (free) — submissions fail until then.
+const WEB3FORMS_ACCESS_KEY='WEB3FORMS_ACCESS_KEY_HERE';
+const cmOverlay=document.getElementById('contactModal');
+const cmForm=document.getElementById('contactForm');
+const cmStatus=document.getElementById('cmStatus');
+const cmSubmit=document.getElementById('cmSubmit');
+let cmLastFocus=null,cmCloseTimer=null;
+const cmMsg={
+  ok:{ar:'تم إرسال طلبك بنجاح! سنتواصل معك قريباً',en:'Your request was sent successfully! We will contact you soon.'},
+  err:{ar:'تعذّر إرسال الطلب. حاول مرة أخرى أو راسلنا على <a href="mailto:sales@somod.sa">sales@somod.sa</a>',en:'We could not send your request. Please try again or email us at <a href="mailto:sales@somod.sa">sales@somod.sa</a>'},
+  sending:{ar:'جارٍ الإرسال…',en:'Sending…'}
+};
+function openContactModal(){
+  clearTimeout(cmCloseTimer);
+  cmStatus.className='cm-status';cmStatus.innerHTML='';
+  cmLastFocus=document.activeElement;
+  cmOverlay.classList.add('open');cmOverlay.setAttribute('aria-hidden','false');
+  document.body.classList.add('cm-lock');
+  setTimeout(()=>cmForm.elements.name.focus(),50);
+}
+function closeContactModal(){
+  clearTimeout(cmCloseTimer);
+  cmOverlay.classList.remove('open');cmOverlay.setAttribute('aria-hidden','true');
+  document.body.classList.remove('cm-lock');
+  if(cmLastFocus&&cmLastFocus.focus) cmLastFocus.focus();
+}
+document.getElementById('cmClose').addEventListener('click',closeContactModal);
+cmOverlay.addEventListener('click',e=>{if(e.target===cmOverlay) closeContactModal();});
+document.addEventListener('keydown',e=>{
+  if(!cmOverlay.classList.contains('open')) return;
+  if(e.key==='Escape') closeContactModal();
+  if(e.key==='Tab'){ // keep focus inside the dialog
+    const f=[...cmOverlay.querySelectorAll('button,input:not(.cm-hp),select,textarea')].filter(el=>!el.disabled);
+    const first=f[0],last=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+  }
+});
+cmForm.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const d=Object.fromEntries(new FormData(cmForm));
+  if(d.botcheck) return;
+  cmSubmit.disabled=true;
+  cmStatus.className='cm-status';cmStatus.textContent='';
+  const label=cmSubmit.textContent;cmSubmit.textContent=cmMsg.sending[lang];
+  try{
+    const res=await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({
+        access_key:WEB3FORMS_ACCESS_KEY,
+        subject:'طلب عرض توضيحي - Somod',
+        from_name:'Somod Landing',
+        name:d.name,company:d.company,email:d.email,phone:d.phone,units:d.units,message:d.message||''
+      })
+    });
+    const out=await res.json().catch(()=>({}));
+    if(!res.ok||!out.success) throw new Error(out.message||res.status);
+    cmStatus.className='cm-status ok';cmStatus.textContent=cmMsg.ok[lang];
+    cmForm.reset();
+    cmCloseTimer=setTimeout(closeContactModal,2000);
+  }catch(err){
+    cmStatus.className='cm-status err';cmStatus.innerHTML=cmMsg.err[lang];
+  }finally{
+    cmSubmit.disabled=false;cmSubmit.textContent=cmSubmit.getAttribute('data-'+lang)||label;
+  }
+});
 </script>
 </body>
 </html>
