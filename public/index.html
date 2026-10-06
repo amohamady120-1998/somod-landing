@@ -260,9 +260,27 @@ html[dir="ltr"] .step-line{left:-50%}
   .stats{grid-template-columns:1fr}
   .nav{padding:14px 20px}
 }
+
+/* ===== Motion ===== */
+#scrollProgress{position:fixed;top:0;left:0;right:0;height:3px;z-index:200;background:linear-gradient(90deg,#00a76f,#00d492);transform:scaleX(0);transform-origin:right;will-change:transform;pointer-events:none}
+html[dir="ltr"] #scrollProgress{transform-origin:left}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.hero-badge.in{animation:float 4s ease-in-out 1s infinite}
+.demo-wrap.in{animation:float 6s ease-in-out 1.4s infinite}
+.feat,.plan{transform-style:preserve-3d}
+.feat-ic{transition:transform .3s}
+.feat:hover .feat-ic{transform:scale(1.1) rotate(-3deg)}
+.btn-primary,.cta-primary{position:relative;overflow:hidden}
+.btn-primary::after,.cta-primary::after{content:'';position:absolute;top:0;left:0;width:60%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,0.25),transparent);transform:translateX(-180%) skewX(-20deg);pointer-events:none}
+.cta-primary::after{background:linear-gradient(120deg,transparent,rgba(0,167,111,0.18),transparent)}
+.btn-primary:hover::after,.cta-primary:hover::after{transform:translateX(260%) skewX(-20deg);transition:transform .7s ease}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+}
 </style>
 </head>
 <body dir="rtl">
+<div id="scrollProgress"></div>
 
 <!-- NAV -->
 <nav class="nav" id="nav">
@@ -287,26 +305,26 @@ html[dir="ltr"] .step-line{left:-50%}
   <div class="mesh"></div>
   <div class="hero-grid"></div>
   <div class="container">
-    <div class="hero-badge reveal in">
+    <div class="hero-badge reveal">
       <span class="badge-pill" data-ar="جديد" data-en="New">جديد</span>
       <span data-ar="المنصة الأولى لإدارة ما بعد التسليم في السعودية" data-en="Saudi Arabia&#x27;s #1 post-handover platform">المنصة الأولى لإدارة ما بعد التسليم في السعودية</span>
     </div>
-    <h1 class="hero-title reveal in d1">
+    <h1 class="hero-title reveal d1">
       <span data-ar="ملّاك سعداء. سمعة تبيع " data-en="Happy owners. A reputation that ">ملّاك سعداء. سمعة تبيع </span><span class="grad" data-ar="مشاريعك القادمة" data-en="sells your next project">مشاريعك القادمة</span>
     </h1>
-    <p class="hero-sub reveal in d2" data-ar="في عالم العقار، رضا الملّاك بعد التسليم هو ما يصنع سمعتك. Somod يمنحك التحكم الكامل في الصيانة والضمانات — وتجربة تجعل ملّاكك سفراءً لمشاريعك القادمة." data-en="In real estate, owner satisfaction after handover is what builds your reputation. Somod gives you full control over maintenance and warranties — and an experience that turns your owners into ambassadors for your next project.">في عالم العقار، رضا الملّاك بعد التسليم هو ما يصنع سمعتك. Somod يمنحك التحكم الكامل في الصيانة والضمانات — وتجربة تجعل ملّاكك سفراءً لمشاريعك القادمة.</p>
-    <div class="hero-ctas reveal in d3">
+    <p class="hero-sub reveal d2" data-ar="في عالم العقار، رضا الملّاك بعد التسليم هو ما يصنع سمعتك. Somod يمنحك التحكم الكامل في الصيانة والضمانات — وتجربة تجعل ملّاكك سفراءً لمشاريعك القادمة." data-en="In real estate, owner satisfaction after handover is what builds your reputation. Somod gives you full control over maintenance and warranties — and an experience that turns your owners into ambassadors for your next project.">في عالم العقار، رضا الملّاك بعد التسليم هو ما يصنع سمعتك. Somod يمنحك التحكم الكامل في الصيانة والضمانات — وتجربة تجعل ملّاكك سفراءً لمشاريعك القادمة.</p>
+    <div class="hero-ctas reveal d3">
       <button class="btn-primary" onclick="window.location.href='https://somod-production.up.railway.app/login'"><span data-ar="اطلب عرضاً توضيحياً" data-en="Request a Demo">اطلب عرضاً توضيحياً</span> <span class="arrow">←</span></button>
       <button class="btn-ghost" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})"><span class="play-ic">▶</span> <span data-ar="شاهد كيف يعمل" data-en="See how it works">شاهد كيف يعمل</span></button>
     </div>
-    <div class="hero-note reveal in d4">
+    <div class="hero-note reveal d4">
       <span class="note-item">✓ <span data-ar="تجربة مجانية" data-en="Free trial">تجربة مجانية</span></span>
       <span class="note-item">✓ <span data-ar="بدون بطاقة ائتمان" data-en="No credit card">بدون بطاقة ائتمان</span></span>
       <span class="note-item">✓ <span data-ar="إعداد في دقائق" data-en="Setup in minutes">إعداد في دقائق</span></span>
     </div>
 
     <!-- DEMO -->
-    <div class="demo-wrap reveal in d5">
+    <div class="demo-wrap reveal d5">
       <div class="win">
         <div class="win-bar">
           <div class="wdot" style="background:#ff5f57"></div>
@@ -696,6 +714,72 @@ document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
   // initial
   setTimeout(()=>{animateCounts();animateBars();},600);
   start();
+})();
+
+// ===== Motion =====
+const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Scroll progress bar
+(function(){
+  const bar=document.getElementById('scrollProgress');
+  let ticking=false;
+  function update(){
+    const h=document.documentElement.scrollHeight-window.innerHeight;
+    bar.style.transform='scaleX('+(h>0?Math.min(1,window.scrollY/h):0)+')';
+    ticking=false;
+  }
+  window.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(update);}},{passive:true});
+  window.addEventListener('resize',update);
+  update();
+})();
+
+// Count-up for the results stats
+(function(){
+  const stats=document.querySelector('.stats');
+  if(!stats||reduceMotion) return;
+  const AR='٠١٢٣٤٥٦٧٨٩';
+  const toAr=s=>s.replace(/\d/g,d=>AR[d]);
+  const parse=str=>{const m=str.match(/^([^\d٠-٩]*)([\d٠-٩.]+)(.*)$/);return m?{pre:m[1],suf:m[3]}:null;};
+  const items=[...stats.querySelectorAll('.stat-n')].map(el=>{
+    const en=el.getAttribute('data-en'),m=en.match(/[\d.]+/);
+    const dec=(m[0].split('.')[1]||'').length;
+    return {el,target:parseFloat(m[0]),dec,ar:parse(el.getAttribute('data-ar')),en:parse(en)};
+  });
+  const fmt=(it,v)=>{
+    const n=v.toFixed(it.dec);
+    return lang==='ar'?it.ar.pre+toAr(n)+it.ar.suf:it.en.pre+n+it.en.suf;
+  };
+  items.forEach(it=>it.el.textContent=fmt(it,0));
+  const run=()=>{
+    const t0=performance.now(),dur=1600;
+    (function tick(t){
+      const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);
+      items.forEach(it=>it.el.textContent=fmt(it,it.target*e));
+      if(k<1) requestAnimationFrame(tick);
+    })(t0);
+  };
+  const so=new IntersectionObserver(es=>{if(es[0].isIntersecting){so.disconnect();run();}},{threshold:0.4});
+  so.observe(stats);
+})();
+
+// Subtle 3D tilt on feature and plan cards (mouse only)
+(function(){
+  if(reduceMotion||!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  document.querySelectorAll('.feat,.plan').forEach(card=>{
+    let raf=0;
+    card.addEventListener('mousemove',e=>{
+      cancelAnimationFrame(raf);
+      raf=requestAnimationFrame(()=>{
+        const r=card.getBoundingClientRect();
+        const x=(e.clientX-r.left)/r.width-0.5;
+        const y=(e.clientY-r.top)/r.height-0.5;
+        // inline transition drops the reveal stagger delay so the tilt follows the cursor
+        card.style.transition='transform .2s, border-color .25s';
+        card.style.transform=`perspective(800px) rotateY(${x*5}deg) rotateX(${-y*5}deg) translateY(-4px)`;
+      });
+    });
+    card.addEventListener('mouseleave',()=>{cancelAnimationFrame(raf);card.style.transform='';});
+  });
 })();
 </script>
 </body>
