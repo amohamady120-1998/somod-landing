@@ -83,7 +83,7 @@ a{text-decoration:none;color:inherit}
 .nav-burger span{width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
 
 /* HERO */
-.hero{padding:130px 0 0;text-align:center;position:relative;overflow:hidden}
+.hero{padding:130px 0 56px;text-align:center;position:relative;overflow:hidden}
 .mesh{position:absolute;inset:0;pointer-events:none}
 .mesh::before{content:'';position:absolute;top:-10%;left:50%;transform:translateX(-50%);width:900px;height:500px;max-width:120vw;background:radial-gradient(ellipse,rgba(0,167,111,0.18),transparent 60%);filter:blur(70px)}
 .mesh::after{content:'';position:absolute;top:35%;right:-5%;width:400px;height:400px;background:radial-gradient(circle,rgba(16,185,129,0.1),transparent 65%);filter:blur(80px)}
@@ -393,7 +393,9 @@ body{transition:background-color .3s,color .3s}
 :root[data-theme="light"] .stats{background:linear-gradient(160deg,rgba(0,167,111,0.07),#fff)}
 :root[data-theme="light"] .feat-glow{opacity:.08}
 :root[data-theme="light"] .mesh::before{background:radial-gradient(ellipse,rgba(0,167,111,0.14),transparent 60%)}
-:root[data-theme="light"] .win{box-shadow:0 40px 90px rgba(13,20,32,0.18),0 0 0 1px rgba(13,20,32,0.06)}
+:root[data-theme="light"] .win{border-radius:16px;box-shadow:0 30px 60px -20px rgba(13,20,32,0.35),0 12px 24px -12px rgba(13,20,32,0.18),0 0 0 1px rgba(13,20,32,0.08)}
+/* the bottom fade only blends into a dark page; on a light page the window gets a full frame instead */
+:root[data-theme="light"] .demo-reflect{display:none}
 :root[data-theme="light"] .hero-badge,:root[data-theme="light"] .btn-ghost{background-color:#fff;box-shadow:0 1px 2px rgba(13,20,32,0.05)}
 :root[data-theme="light"] .nav-cta{color:#fff}
 /* green used as text needs the deeper shade on white */
