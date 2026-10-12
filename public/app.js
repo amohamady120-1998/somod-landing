@@ -71,8 +71,6 @@ function applyLanguage(nextLanguage) {
     if (value !== undefined) node.setAttribute("alt", value);
   });
   document.querySelectorAll("[data-shot]").forEach((img) => { img.src = `assets/screens/${img.dataset.shot}-${language}.webp`; });
-  const activeTab = document.querySelector(".experience-tab.is-active [data-i18n]");
-  if (activeTab) document.querySelector(".window-address b").textContent = activeTab.textContent;
   document.title = english ? "Somod — A reputation that sells your next project" : "Somod — سمعة تليق بمشاريعك";
   const description = english
     ? "Somod is a Saudi platform for after-handover operations. A clearer maintenance experience for homeowners and real estate developers."
@@ -138,7 +136,6 @@ function activatePanel(name, focus = false) {
       panel.hidden = !active;
       panel.classList.toggle("is-active", active);
     }
-    if (active) document.querySelector(".window-address b").textContent = tab.textContent.trim();
     if (active && focus) tab.focus();
   });
 }
