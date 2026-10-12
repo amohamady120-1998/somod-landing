@@ -191,3 +191,6 @@ html[dir="ltr"] .owner-demo,html[dir="ltr"] .tech-demo{direction:ltr}
 /* accessibility: readable sizes on phones */
 .window-address{color:var(--muted)}
 @media(max-width:580px){.experience-tab{font-size:11px;padding-inline:10px}.language-toggle{font-size:11px}}
+
+/* anything marked hidden stays hidden, whatever display a component sets */
+[hidden]{display:none!important}
