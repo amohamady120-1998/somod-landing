@@ -67,3 +67,18 @@ html[dir="ltr"] .owner-demo,html[dir="ltr"] .tech-demo{direction:ltr}
   .mobile-cta .button{padding-inline:16px;white-space:nowrap}
   .footer-sbc{margin-inline-start:0}
 }
+
+/* plainer layout: fewer boxed cards, no decoration */
+.challenge-grid,.features-grid{gap:0 48px}
+.challenge-card,.feature-card{min-height:0;padding:26px 0 30px;border:0;border-top:1px solid var(--line);border-radius:0;background:transparent;box-shadow:none}
+.challenge-card:hover,.feature-card:hover{transform:none;box-shadow:none}
+.feature-card.feature-primary{background:transparent;color:inherit}
+.feature-card.feature-primary p{color:var(--muted)}
+.feature-card.feature-primary .feature-icon{background:var(--green-soft);color:var(--green)}
+.features-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.feature-card-top{margin-bottom:14px}
+.section-heading h2,.proof-heading h2,.contact-heading h2,.experience-intro h2,.security-copy h2,.closing-shell h2{margin-top:0}
+.hero .eyebrow{padding:0;border:0;background:none;color:var(--green-ink)}
+.how-note{justify-content:center;gap:14px}
+@media(max-width:820px){.features-grid{grid-template-columns:1fr}}
+.closing-shell{grid-template-columns:minmax(0,1fr)}
