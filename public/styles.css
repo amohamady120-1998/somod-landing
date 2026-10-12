@@ -154,3 +154,29 @@ html[dir="ltr"] .owner-demo,html[dir="ltr"] .tech-demo{direction:ltr}
 .contact-heading .button.contact-demo{display:inline-flex;width:auto;padding:14px 22px;border:0;border-radius:14px;background:var(--green-dark);color:#fff;font-size:14px;font-weight:600;text-decoration:none}
 .contact-heading .button.contact-demo:hover{background:var(--green)}
 :root[data-theme="dark"] .contact-heading .button.contact-demo{background:var(--green);color:#0d1a15}
+
+.about-shell{grid-template-columns:minmax(0,1fr);max-width:none}
+.about-copy{max-width:720px}
+.about-copy p+p{margin-top:14px}
+.about-link{margin-top:22px}
+
+/* legal pages */
+.legal-shell{max-width:780px;padding-block:56px 72px}
+.legal-draft{display:inline-block;margin:0 0 20px;padding:6px 12px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:13px}
+.legal-shell h1{margin:0 0 6px;font-size:clamp(32px,4vw,44px);letter-spacing:-.04em}
+.legal-meta{margin:0 0 22px;color:var(--muted);font-size:13px}
+.legal-lead{font-size:16px;line-height:2;color:color-mix(in srgb,var(--ink) 80%,var(--paper))}
+.legal-toc{margin:28px 0 8px;padding:18px 22px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.legal-toc ol{margin:0;padding-inline-start:20px;columns:2;column-gap:28px;font-size:14px;line-height:2.1}
+.legal-toc a{color:var(--ink)}
+.legal-toc a:hover{color:var(--green)}
+.legal-body section{padding-top:30px}
+.legal-body h2{margin:0 0 10px;font-size:21px}
+.legal-body p,.legal-body li{font-size:15px;line-height:2;color:color-mix(in srgb,var(--ink) 80%,var(--paper))}
+.legal-body p{margin:0 0 10px}
+.legal-body ul{margin:0;padding-inline-start:22px}
+.legal-body a{color:var(--green-ink);text-decoration:underline}
+.legal-footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;padding-block:22px 34px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+.legal-footer a{color:inherit}
+@media(max-width:580px){.legal-toc ol{columns:1}}
+.about-link{padding:0;border:0;background:none;color:var(--green-ink);font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
