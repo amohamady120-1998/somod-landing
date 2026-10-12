@@ -257,9 +257,27 @@ if (mobileCta && heroSection && "IntersectionObserver" in window) {
     mobileCta.querySelector("button").tabIndex = show ? 0 : -1;
   }).observe(heroSection);
 }
-// WhatsApp links stay inactive until the real number is set
-const WHATSAPP_NUMBER = ""; // e.g. "9665XXXXXXXX"
+// ===== Company details =====
+// Fill these in once the real details are available. Anything left empty stays hidden on the page.
+const COMPANY = {
+  whatsapp: "",      // international format without + or spaces, e.g. "9665XXXXXXXX"
+  phone: "",         // as it should be shown, e.g. "+966 11 XXX XXXX"
+  crNumber: "",      // commercial registration number
+  vatNumber: "",     // VAT registration number
+  sbcVerified: false // true once verified by the Saudi Business Center
+};
+const formatPhone = (digits) => digits.replace(/^(966)(\d{2})(\d{3})(\d{4})$/, "+$1 $2 $3 $4");
+document.querySelectorAll("[data-company]").forEach((el) => {
+  const key = el.dataset.company;
+  const value = COMPANY[key];
+  el.hidden = !value;
+  const slot = el.querySelector("[data-company-value]");
+  if (slot && value) slot.textContent = key === "whatsapp" ? formatPhone(value) : value;
+});
+document.querySelectorAll("[data-company-group]").forEach((group) => {
+  group.hidden = ![...group.querySelectorAll("[data-company]")].some((el) => !el.hidden);
+});
 document.querySelectorAll("[data-whatsapp]").forEach((link) => {
-  if (WHATSAPP_NUMBER) { link.href = `https://wa.me/${WHATSAPP_NUMBER}`; link.target = "_blank"; link.rel = "noopener"; }
+  if (COMPANY.whatsapp) { link.href = `https://wa.me/${COMPANY.whatsapp}`; link.target = "_blank"; link.rel = "noopener"; }
   else link.addEventListener("click", (event) => event.preventDefault());
 });
