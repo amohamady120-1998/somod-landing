@@ -46,3 +46,10 @@ html[dir="rtl"] .button:hover .arrow-icon,html[dir="rtl"] .text-link:hover .arro
 @media(max-width:580px){.shot-phone{height:340px}}
 html[dir="ltr"] .owner-demo,html[dir="ltr"] .tech-demo{direction:ltr}
 .experience-panels,.experience-panel{min-height:0}
+
+/* request form: the spam trap must never take up space, and the scrollbar stays quiet */
+.demo-form .form-honeypot{display:none!important}
+.demo-dialog{overflow-x:hidden;scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--muted) 45%,transparent) transparent}
+.demo-dialog::-webkit-scrollbar{width:8px}
+.demo-dialog::-webkit-scrollbar-track{background:transparent}
+.demo-dialog::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--muted) 40%,transparent);border-radius:8px;border:2px solid var(--surface)}
