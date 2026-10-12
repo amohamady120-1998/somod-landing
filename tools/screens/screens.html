@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<title>Somod product screens (source for the landing page screenshots)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#f4f5f1; --surface:#fff; --ink:#17221e; --ink-2:#3c4842; --muted:#76817a; --faint:#a3aca6; --line:#e3e7e1; --line-2:#eef1ec;
+  --green:#087b62; --green-dark:#075b49; --green-soft:#e2f1e9; --green-ink:#075743;
+  --red:#d14b3f; --red-soft:#fbe9e6; --amber:#c98a16; --amber-soft:#fbf1dc; --blue:#2f6fd0; --blue-soft:#e6eefb; --violet:#7656c9; --violet-soft:#efeafb;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:transparent;font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+html[dir="ltr"] body{letter-spacing:-.01em}
+.screen{display:none}
+.screen.on{display:block}
+svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.num{font-feature-settings:"tnum"}
+.badge{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 9px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.b-red{background:var(--red-soft);color:var(--red)} .b-amber{background:var(--amber-soft);color:var(--amber)} .b-green{background:var(--green-soft);color:var(--green)} .b-blue{background:var(--blue-soft);color:var(--blue)} .b-gray{background:#eef0ed;color:var(--muted)} .b-violet{background:var(--violet-soft);color:var(--violet)}
+.av{width:28px;height:28px;border-radius:50%;display:inline-grid;place-items:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.av-1{background:linear-gradient(135deg,#0a8a6c,#06604c)} .av-2{background:linear-gradient(135deg,#c9932f,#9b6c18)} .av-3{background:linear-gradient(135deg,#4e7fd6,#2b56a3)} .av-4{background:linear-gradient(135deg,#8a6fd3,#5c43a6)} .av-5{background:linear-gradient(135deg,#d0695c,#a6463b)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.card-h{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 0}
+.card-h b{font-size:14px;font-weight:600}
+.card-h span{font-size:12px;color:var(--muted)}
+.link{color:var(--green);font-size:12px;font-weight:600}
+
+/* ================= DESKTOP: shared shell ================= */
+.desk{width:1280px;height:800px;background:var(--bg);display:grid;grid-template-columns:244px 1fr;overflow:hidden}
+.side{background:var(--surface);border-inline-end:1px solid var(--line);display:flex;flex-direction:column;padding:18px 14px}
+.logo{display:flex;align-items:center;gap:10px;padding:2px 6px 18px}
+.logo-mark{width:32px;height:32px;border-radius:10px;background:var(--green-dark);display:grid;place-items:center}
+.logo-mark svg{width:22px;height:22px;stroke:#f8f7f1;stroke-width:3;fill:none;stroke-linecap:round}
+.logo b{font-size:17px;font-weight:700;letter-spacing:-.02em;font-family:system-ui,sans-serif}
+.proj{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:11px;margin-bottom:18px}
+.proj-ic{width:30px;height:30px;border-radius:8px;background:var(--green-soft);color:var(--green);display:grid;place-items:center}
+.proj div{flex:1;line-height:1.35}
+.proj b{display:block;font-size:13px}
+.proj small{font-size:11px;color:var(--muted)}
+.nav-t{font-size:10.5px;color:var(--faint);font-weight:600;padding:0 10px 6px;letter-spacing:.02em}
+.nav-i{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;font-size:13px;white-space:nowrap;color:var(--ink-2);margin-bottom:2px}
+.nav-i .i{color:var(--muted)}
+.nav-i.on{background:var(--green-soft);color:var(--green-ink);font-weight:600}
+.nav-i.on .i{color:var(--green)}
+.nav-i .cnt{margin-inline-start:auto;font-size:11px;font-weight:600;background:#eef0ed;color:var(--ink-2);border-radius:999px;padding:1px 8px}
+.nav-i.on .cnt{background:var(--green);color:#fff}
+.side-foot{margin-top:auto;border-top:1px solid var(--line-2);padding-top:12px}
+.me{display:flex;align-items:center;gap:10px;padding:8px 6px}
+.me div{line-height:1.35}
+.me b{display:block;font-size:13px}
+.me small{font-size:11px;color:var(--muted)}
+.main{display:flex;flex-direction:column;min-width:0}
+.top{height:64px;display:flex;align-items:center;gap:14px;padding:0 26px;background:var(--surface);border-bottom:1px solid var(--line)}
+.top h1{font-size:18px;font-weight:600}
+.crumb{font-size:12px;color:var(--muted)}
+.search{margin-inline-start:auto;display:flex;align-items:center;gap:8px;width:330px;height:38px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--faint);font-size:12.5px}
+.search kbd{margin-inline-start:auto;font-family:system-ui;font-size:10.5px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+.ibtn{position:relative;width:38px;height:38px;border:1px solid var(--line);border-radius:10px;display:grid;place-items:center;color:var(--ink-2)}
+.ibtn .dot{position:absolute;top:8px;inset-inline-end:9px;width:7px;height:7px;border-radius:50%;background:var(--red);border:2px solid #fff}
+.pbtn{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 15px;border-radius:10px;background:var(--green);color:#fff;font-size:13px;font-weight:600}
+.body{flex:1;padding:22px 26px;display:flex;flex-direction:column;gap:16px;min-height:0}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{padding:16px 18px;position:relative;overflow:hidden}
+.kpi-l{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.kpi-ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center}
+.kpi-ic .i{width:14px;height:14px}
+.kpi-v{display:flex;align-items:baseline;gap:8px;margin-top:10px}
+.kpi-v b{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.kpi-v span{font-size:13px;color:var(--muted)}
+.delta{font-size:11.5px;font-weight:600;margin-top:8px}
+.delta em{font-style:normal;color:var(--muted);font-weight:400}
+.up{color:var(--green)} .down{color:var(--red)}
+.spark{position:absolute;inset-inline-end:16px;top:52px;width:92px;height:34px}
+
+/* admin middle */
+.mid{display:grid;grid-template-columns:1.75fr 1fr;gap:16px}
+.chart{padding-bottom:14px}
+.legend{display:flex;gap:14px;font-size:11.5px;color:var(--muted)}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-inline-end:5px;vertical-align:middle}
+.sla{padding-bottom:16px}
+.sla-ring{display:flex;align-items:center;gap:18px;padding:12px 18px 6px}
+.sla-ring div b{display:block;font-size:13px;font-weight:600}
+.sla-ring div span{font-size:11.5px;color:var(--muted)}
+.prio{padding:4px 18px 0}
+.prio-r{display:grid;grid-template-columns:52px 1fr 34px;align-items:center;gap:10px;font-size:12px;margin-top:9px}
+.bar{height:6px;border-radius:9px;background:var(--line-2);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:9px}
+
+/* table */
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{font-weight:500;color:var(--muted);font-size:11.5px;text-align:start;padding:10px 18px;border-bottom:1px solid var(--line);background:#fafbf8}
+td{padding:9px 18px;border-bottom:1px solid var(--line-2);vertical-align:middle;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.id{font-family:system-ui,sans-serif;font-size:12px;color:var(--ink-2);direction:ltr;unicode-bidi:isolate}
+.who{display:flex;align-items:center;gap:8px}
+.who .av{width:24px;height:24px;font-size:10px}
+.cat{display:flex;align-items:center;gap:8px}
+.cat-ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center}
+.cat-ic .i{width:14px;height:14px}
+.sla-t{font-size:12px;font-weight:600}
+.sla-t small{display:block;font-weight:400;color:var(--muted);font-size:10.5px}
+.tbl-h{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 12px}
+.tbl-h b{font-size:14px;font-weight:600}
+.chips{display:flex;gap:6px}
+.chip{font-size:11.5px;padding:4px 10px;border-radius:8px;color:var(--muted);border:1px solid var(--line)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* vendor */
+.vtop{height:64px;display:flex;align-items:center;gap:22px;padding:0 28px;background:var(--surface);border-bottom:1px solid var(--line)}
+.vtabs{display:flex;gap:4px;height:100%}
+.vtab{display:flex;align-items:center;padding:0 12px;font-size:13px;color:var(--muted);border-bottom:2px solid transparent}
+.vtab.on{color:var(--green-ink);font-weight:600;border-bottom-color:var(--green)}
+.vdesk{width:1280px;height:800px;background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+.vbody{flex:1;padding:22px 28px;display:flex;flex-direction:column;gap:16px}
+.vhead{display:flex;align-items:flex-end;justify-content:space-between}
+.vhead h1{font-size:21px;font-weight:600}
+.vhead p{font-size:12.5px;color:var(--muted);margin-top:3px}
+.vgrid{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;flex:1;min-height:0}
+.job{display:grid;grid-template-columns:34px 1fr auto auto;align-items:center;gap:12px;padding:13px 18px;border-top:1px solid var(--line-2)}
+.job b{font-size:13px;font-weight:600;display:block}
+.job small{font-size:11.5px;color:var(--muted)}
+.job .meta{display:flex;gap:10px;align-items:center;margin-top:3px}
+.btn-o{height:32px;padding:0 12px;border:1px solid var(--line);border-radius:9px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);background:#fff}
+.btn-g{height:32px;padding:0 12px;border-radius:9px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;color:#fff;background:var(--green)}
+.acts{display:flex;gap:8px}
+.tech{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:11px;padding:11px 18px;border-top:1px solid var(--line-2)}
+.tech .av{width:34px;height:34px;font-size:12px}
+.tech b{font-size:13px;font-weight:600;display:block}
+.tech small{font-size:11.5px;color:var(--muted)}
+.load{display:flex;align-items:center;gap:8px;margin-top:5px}
+.load .bar{width:110px;height:5px}
+.load span{font-size:10.5px;color:var(--muted)}
+.sched{display:flex;gap:10px;padding:12px 18px 16px}
+.slot{flex:1;border-radius:10px;padding:10px 12px;font-size:11.5px;line-height:1.5}
+.slot b{display:block;font-size:12.5px}
+
+/* ================= PHONES ================= */
+.device{width:414px;padding:12px;border-radius:62px;background:linear-gradient(145deg,#2b302d,#0e100f);box-shadow:inset 0 0 0 1.5px #4a514c,inset 0 0 0 4px #121413}
+.phone{position:relative;width:390px;height:844px;border-radius:50px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:120px;height:34px;border-radius:20px;background:#0b0c0c;z-index:5}
+.sbar{height:54px;display:flex;align-items:center;justify-content:space-between;padding:6px 32px 0;font-family:system-ui,sans-serif;font-size:15px;font-weight:600;direction:ltr;flex-shrink:0}
+.sbar .ic{display:flex;gap:6px;align-items:center}
+.pscroll{flex:1;overflow:hidden;padding:4px 18px 0}
+.tabbar{flex-shrink:0;height:84px;background:rgba(255,255,255,.96);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:9px 6px 0}
+.tb{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;color:var(--faint)}
+.tb .i{width:22px;height:22px}
+.tb.on{color:var(--green);font-weight:600}
+.home-ind{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:9px;background:#111}
+.ph-h{display:flex;align-items:center;gap:12px;padding:6px 0 14px}
+.ph-h div{flex:1;line-height:1.4}
+.ph-h small{font-size:12.5px;color:var(--muted)}
+.ph-h b{display:block;font-size:19px;font-weight:700}
+.ph-h .av{width:40px;height:40px;font-size:14px}
+.ph-bell{position:relative;width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid var(--line);display:grid;place-items:center;color:var(--ink-2)}
+.ph-bell .dot{position:absolute;top:9px;inset-inline-end:10px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid #fff}
+.unit{border-radius:20px;padding:16px 18px;color:#fff;background:radial-gradient(circle at 15% 0%,rgba(255,255,255,.18),transparent 45%),linear-gradient(135deg,#0b7a60,#064d3d)}
+.unit-top{display:flex;justify-content:space-between;align-items:flex-start}
+.unit small{font-size:12px;opacity:.75}
+.unit b{display:block;font-size:20px;font-weight:700;margin-top:2px}
+.unit .wr{display:flex;align-items:center;gap:7px;margin-top:14px;font-size:12px;background:rgba(255,255,255,.14);border-radius:10px;padding:8px 10px}
+.newreq{display:flex;align-items:center;justify-content:center;gap:8px;height:50px;border-radius:15px;background:var(--ink);color:#fff;font-size:15px;font-weight:600;margin-top:14px}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.cat-b{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-2)}
+.cat-b .cat-ic{width:34px;height:34px;border-radius:11px}
+.sec-t{display:flex;justify-content:space-between;align-items:center;margin:18px 0 9px;font-size:15px;font-weight:600}
+.sec-t span{font-size:12.5px;color:var(--green);font-weight:600}
+.track{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 15px}
+.track-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.track-h b{font-size:15px;font-weight:600;display:block}
+.track-h small{font-size:12px;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);margin:16px 0 6px;position:relative}
+.steps::before{content:"";position:absolute;top:10px;inset-inline:12%;height:2px;background:var(--line)}
+.steps::after{content:"";position:absolute;top:10px;inset-inline-start:12%;width:50%;height:2px;background:var(--green)}
+.st{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:10.5px;color:var(--muted);text-align:center}
+.st i{width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--line);display:grid;place-items:center}
+.st.done i{background:var(--green);border-color:var(--green);color:#fff}
+.st.done i .i{width:12px;height:12px;stroke-width:3}
+.st.now{color:var(--green-ink);font-weight:600}
+.st.now i{border-color:var(--green);box-shadow:0 0 0 4px var(--green-soft)}
+.st.now i::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--green)}
+.eta{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 11px;border-radius:13px;background:var(--bg)}
+.eta div{flex:1;line-height:1.4}
+.eta b{display:block;font-size:13.5px}
+.eta small{font-size:11.5px;color:var(--muted)}
+.eta .av{width:38px;height:38px;font-size:13px}
+.call{width:38px;height:38px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center}
+.mini{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--line);border-radius:15px;padding:11px 12px;margin-bottom:8px}
+.mini div{flex:1;line-height:1.4}
+.mini b{display:block;font-size:13.5px;font-weight:600}
+.mini small{font-size:11.5px;color:var(--muted)}
+/* technician */
+.avail{display:flex;align-items:center;gap:7px;height:32px;padding:0 11px;border-radius:999px;background:var(--green-soft);color:var(--green-ink);font-size:12px;font-weight:600}
+.tgl{width:28px;height:17px;border-radius:9px;background:var(--green);position:relative}
+.tgl::after{content:"";position:absolute;top:2px;inset-inline-end:2px;width:13px;height:13px;border-radius:50%;background:#fff}
+.dayp{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.dayp-h{display:flex;justify-content:space-between;font-size:12.5px}
+.dayp-h b{font-weight:600}
+.dayp-h span{color:var(--muted)}
+.dayp .bar{height:7px;margin-top:9px}
+.job-card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;margin-top:12px}
+.map{position:relative;height:118px;background:#e9efe8;overflow:hidden}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.pin{position:absolute;top:34px;left:58%;width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--red);box-shadow:0 6px 14px rgba(209,75,63,.4)}
+.pin::after{content:"";position:absolute;top:11px;left:11px;width:12px;height:12px;border-radius:50%;background:#fff}
+.dist{position:absolute;bottom:10px;right:10px;background:#fff;border-radius:10px;padding:5px 10px;font-size:11.5px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,.08);display:flex;gap:6px;align-items:center}
+.jc-b{padding:13px 15px 15px}
+.jc-top{display:flex;justify-content:space-between;align-items:center}
+.jc-b h3{font-size:16.5px;font-weight:700;margin-top:8px}
+.jc-meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;font-size:12px;color:var(--muted)}
+.jc-meta span{display:flex;align-items:center;gap:5px}
+.jc-meta .i{width:13px;height:13px}
+.check{margin-top:12px;border-top:1px solid var(--line-2);padding-top:10px}
+.ck{display:flex;align-items:center;gap:9px;font-size:12.5px;padding:4px 0}
+.ck i{width:18px;height:18px;border-radius:6px;border:1.6px solid var(--line);display:grid;place-items:center}
+.ck.ok i{background:var(--green);border-color:var(--green);color:#fff}
+.ck.ok i .i{width:11px;height:11px;stroke-width:3}
+.ck.ok span{color:var(--muted);text-decoration:line-through}
+.photos{display:flex;gap:7px;margin-top:10px}
+.photos i{width:52px;height:52px;border-radius:11px}
+.photos .add{display:grid;place-items:center;border:1.5px dashed var(--line);color:var(--faint)}
+.jc-acts{display:grid;grid-template-columns:auto 1fr;gap:9px;margin-top:13px}
+.jc-call{width:46px;height:46px;border-radius:14px;border:1px solid var(--line);display:grid;place-items:center;color:var(--ink-2)}
+.start{height:46px;border-radius:14px;background:linear-gradient(145deg,#e5ad3b,#c48614);color:#2a1d04;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:700;box-shadow:0 8px 18px rgba(201,138,22,.28)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="wrench" viewBox="0 0 24 24"><path d="M14.7 6.4a5 5 0 0 0-6.4 6.4L3 18l3 3 5.2-5.3a5 5 0 0 0 6.4-6.4L14 13l-3-3 3.7-3.6Z"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="home" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></symbol>
+  <symbol id="users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm6-7a4 4 0 0 1 0 8m6 9v-2a4 4 0 0 0-3-3.9"/></symbol>
+  <symbol id="chart" viewBox="0 0 24 24"><path d="M4 19V5m0 14h17M8 15l3-4 3 2 5-7"/></symbol>
+  <symbol id="cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+  <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9Z"/></symbol>
+  <symbol id="drop" viewBox="0 0 24 24"><path d="M12 3s6 6.4 6 11a6 6 0 0 1-12 0c0-4.6 6-11 6-11Z"/></symbol>
+  <symbol id="bolt" viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z"/></symbol>
+  <symbol id="snow" viewBox="0 0 24 24"><path d="M12 2v20M4.9 4.9l14.2 14.2M2 12h20M4.9 19.1 19.1 4.9"/></symbol>
+  <symbol id="door" viewBox="0 0 24 24"><path d="M5 21V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v17M3 21h18M15 12h.01"/></symbol>
+  <symbol id="phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></symbol>
+  <symbol id="pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+  <symbol id="list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="cam" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h2l2-2h6l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="nav" viewBox="0 0 24 24"><path d="m3 11 18-8-8 18-2-8Z"/></symbol>
+  <symbol id="file" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8Z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+  <symbol id="cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="chev" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+  <symbol id="logo" viewBox="0 0 40 40"><path d="M28.7 12.8c-2.3-2.2-5.2-3.3-8.8-3.3-5.6 0-9.7 2.7-9.7 6.8 0 3.5 2.9 5.5 8.8 6.9l2.5.6c5.2 1.2 7.7 3.2 7.7 6.5 0 4.4-4.5 7.1-10.4 7.1-4.2 0-7.9-1.4-10.4-4.1"/><path d="M28.7 12.8V7.5h-5.4" stroke="#a5ddbd"/></symbol>
+</svg>
+
+<!-- ============================ ADMIN DASHBOARD ============================ -->
+<section class="screen" id="admin">
+ <div class="desk">
+  <aside class="side">
+    <div class="logo"><span class="logo-mark"><svg viewBox="0 0 40 40"><use href="#logo"/></svg></span><b>Somod</b></div>
+    <div class="proj"><span class="proj-ic"><svg class="i"><use href="#home"/></svg></span><div><b data-en="Al Nakheel project">مشروع النخيل</b><small data-en="Riyadh · 312 units">الرياض · ٣١٢ وحدة</small></div><svg class="i" style="width:14px;color:var(--faint)"><use href="#chev"/></svg></div>
+    <div class="nav-t" data-en="MAIN">الرئيسية</div>
+    <div class="nav-i on"><svg class="i"><use href="#grid"/></svg><span data-en="Overview">نظرة عامة</span></div>
+    <div class="nav-i"><svg class="i"><use href="#wrench"/></svg><span data-en="Maintenance requests">طلبات الصيانة</span><span class="cnt" data-en="47">٤٧</span></div>
+    <div class="nav-i"><svg class="i"><use href="#shield"/></svg><span data-en="Assets & warranties">الأصول والضمانات</span><span class="cnt" data-en="6">٦</span></div>
+    <div class="nav-i"><svg class="i"><use href="#home"/></svg><span data-en="Units & owners">الوحدات والملاك</span></div>
+    <div class="nav-i"><svg class="i"><use href="#users"/></svg><span data-en="Technicians & vendors">الفنيون والموردون</span></div>
+    <div class="nav-i"><svg class="i"><use href="#chart"/></svg><span data-en="Reports">التقارير</span></div>
+    <div class="side-foot">
+      <div class="nav-i"><svg class="i"><use href="#cog"/></svg><span data-en="Settings">الإعدادات</span></div>
+      <div class="me"><span class="av av-1" data-en="SA">س ع</span><div><b data-en="Sara Al-Omari">سارة العمري</b><small data-en="Operations manager">مديرة العمليات</small></div></div>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="top">
+      <div><h1 data-en="Overview">نظرة عامة</h1></div>
+      <div class="search"><svg class="i"><use href="#search"/></svg><span data-en="Search requests, units or owners…">ابحث عن طلب أو وحدة أو مالك…</span><kbd>⌘K</kbd></div>
+      <div class="chip" style="height:38px;display:flex;align-items:center;gap:6px;border-radius:10px;color:var(--ink-2)"><svg class="i" style="width:14px"><use href="#cal"/></svg><span data-en="Last 30 days">آخر ٣٠ يوماً</span></div>
+      <div class="ibtn"><svg class="i"><use href="#bell"/></svg><span class="dot"></span></div>
+      <div class="pbtn"><svg class="i"><use href="#plus"/></svg><span data-en="New request">طلب جديد</span></div>
+    </header>
+    <div class="body">
+      <div class="kpis">
+        <div class="card kpi"><div class="kpi-l"><span class="kpi-ic" style="background:var(--amber-soft);color:var(--amber)"><svg class="i"><use href="#wrench"/></svg></span><span data-en="Active requests">طلبات نشطة</span></div><div class="kpi-v"><b class="num" data-en="47">٤٧</b></div><div class="delta down">↑ <span data-en="12%">١٢٪</span> <em data-en="vs last month">عن الشهر الماضي</em></div>
+          <svg class="spark" viewBox="0 0 92 34"><path d="M2 26 14 22 26 24 38 15 50 18 62 10 74 13 90 6" fill="none" stroke="#c98a16" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="card kpi"><div class="kpi-l"><span class="kpi-ic" style="background:var(--green-soft);color:var(--green)"><svg class="i"><use href="#check"/></svg></span><span data-en="Completion rate">معدل الإنجاز</span></div><div class="kpi-v"><b class="num" data-en="94%">٩٤٪</b></div><div class="delta up">↑ <span data-en="3%">٣٪</span> <em data-en="vs last month">عن الشهر الماضي</em></div>
+          <svg class="spark" viewBox="0 0 92 34"><path d="M2 24 14 25 26 19 38 20 50 13 62 14 74 8 90 5" fill="none" stroke="#087b62" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="card kpi"><div class="kpi-l"><span class="kpi-ic" style="background:var(--blue-soft);color:var(--blue)"><svg class="i"><use href="#clock"/></svg></span><span data-en="Avg. resolution time">متوسط زمن الحل</span></div><div class="kpi-v"><b class="num" data-en="2.5">٢٫٥</b><span data-en="days">يوم</span></div><div class="delta up">↓ <span data-en="18%">١٨٪</span> <em data-en="faster">أسرع</em></div>
+          <svg class="spark" viewBox="0 0 92 34"><path d="M2 8 14 12 26 10 38 17 50 15 62 21 74 20 90 27" fill="none" stroke="#2f6fd0" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="card kpi"><div class="kpi-l"><span class="kpi-ic" style="background:var(--violet-soft);color:var(--violet)"><svg class="i"><use href="#star"/></svg></span><span data-en="Owner rating">تقييم الملاك</span></div><div class="kpi-v"><b class="num" data-en="4.3">٤٫٣</b><span data-en="/ 5">/ ٥</span></div><div class="delta up">↑ <span data-en="0.2">٠٫٢</span> <em data-en="from 286 reviews">من ٢٨٦ تقييماً</em></div>
+          <svg class="spark" viewBox="0 0 92 34"><path d="M2 20 14 21 26 17 38 18 50 14 62 15 74 11 90 9" fill="none" stroke="#7656c9" stroke-width="2" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="mid">
+        <div class="card chart">
+          <div class="card-h"><b data-en="Maintenance requests">طلبات الصيانة</b><div class="legend"><span><i style="background:#cfe5da"></i><span data-en="Received">مستلمة</span></span><span><i style="background:#087b62"></i><span data-en="Resolved">تم حلها</span></span></div></div>
+          <svg viewBox="0 0 640 196" direction="ltr" style="width:100%;height:196px;display:block;margin-top:6px;direction:ltr">
+            <g stroke="#eef1ec" stroke-width="1"><line x1="40" y1="20" x2="630" y2="20"/><line x1="40" y1="65" x2="630" y2="65"/><line x1="40" y1="110" x2="630" y2="110"/><line x1="40" y1="155" x2="630" y2="155"/></g>
+            <g font-size="10" fill="#a3aca6" font-family="system-ui" class="ax-y"><text x="10" y="24">120</text><text x="16" y="69">80</text><text x="16" y="114">40</text><text x="22" y="159">0</text></g>
+            <g class="bars"></g>
+            <g font-size="11" fill="#76817a" class="ax-x"></g>
+          </svg>
+        </div>
+        <div class="card sla">
+          <div class="card-h"><b data-en="SLA compliance">الالتزام بالـ SLA</b><span class="link" data-en="Details">التفاصيل</span></div>
+          <div class="sla-ring">
+            <svg width="92" height="92" viewBox="0 0 92 92"><circle cx="46" cy="46" r="38" fill="none" stroke="#eef1ec" stroke-width="10"/><circle cx="46" cy="46" r="38" fill="none" stroke="#087b62" stroke-width="10" stroke-linecap="round" stroke-dasharray="219.6 238.8" transform="rotate(-90 46 46)"/><text x="46" y="51" text-anchor="middle" font-size="19" font-weight="700" fill="#17221e" font-family="'IBM Plex Sans Arabic'" class="ring-t">٩٢٪</text></svg>
+            <div><b data-en="On-time responses">استجابة في الوقت</b><span data-en="Up 4% this month">تحسن ٤٪ هذا الشهر</span></div>
+          </div>
+          <div class="prio">
+            <div class="prio-r"><span data-en="Urgent">عاجل</span><span class="bar"><i style="width:88%;background:var(--red)"></i></span><b class="num" data-en="88%">٨٨٪</b></div>
+            <div class="prio-r"><span data-en="High">عالٍ</span><span class="bar"><i style="width:93%;background:var(--amber)"></i></span><b class="num" data-en="93%">٩٣٪</b></div>
+            <div class="prio-r"><span data-en="Normal">عادي</span><span class="bar"><i style="width:96%;background:var(--green)"></i></span><b class="num" data-en="96%">٩٦٪</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="overflow:hidden">
+        <div class="tbl-h"><b data-en="Latest requests">أحدث الطلبات</b><div class="chips"><span class="chip on" data-en="All">الكل</span><span class="chip" data-en="Urgent">عاجل</span><span class="chip" data-en="Breaching SLA">متأخر</span></div></div>
+        <table>
+          <thead><tr><th data-en="Request">الطلب</th><th data-en="Category">التصنيف</th><th data-en="Unit">الوحدة</th><th data-en="Assigned to">المسند إليه</th><th data-en="Priority">الأولوية</th><th data-en="SLA">SLA</th><th data-en="Status">الحالة</th></tr></thead>
+          <tbody>
+            <tr><td><span class="id">SR-2048</span></td><td><span class="cat"><span class="cat-ic" style="background:var(--blue-soft);color:var(--blue)"><svg class="i"><use href="#drop"/></svg></span><span data-en="Kitchen water leak">تسريب مياه — المطبخ</span></span></td><td data-en="B-05 · Tower B">B-05 · برج ب</td><td><span class="who"><span class="av av-1" data-en="K">خ</span><span data-en="Khalid Al-Harbi">خالد الحربي</span></span></td><td><span class="badge b-red" data-en="Urgent">عاجل</span></td><td><span class="sla-t" style="color:var(--red)" data-en="1h 20m left">متبقٍ ساعة و٢٠ د</span></td><td><span class="badge b-blue" data-en="In progress">قيد التنفيذ</span></td></tr>
+            <tr><td><span class="id">SR-2047</span></td><td><span class="cat"><span class="cat-ic" style="background:var(--green-soft);color:var(--green)"><svg class="i"><use href="#snow"/></svg></span><span data-en="AC not cooling">تكييف لا يبرّد</span></span></td><td data-en="A-12 · Tower A">A-12 · برج أ</td><td><span class="who"><span class="av av-3" data-en="Y">ي</span><span data-en="Yousef Al-Shehri">يوسف الشهري</span></span></td><td><span class="badge b-amber" data-en="High">عالٍ</span></td><td><span class="sla-t" data-en="6h left">متبقٍ ٦ ساعات</span></td><td><span class="badge b-violet" data-en="Assigned">مُسند</span></td></tr>
+            <tr><td><span class="id">SR-2046</span></td><td><span class="cat"><span class="cat-ic" style="background:var(--amber-soft);color:var(--amber)"><svg class="i"><use href="#bolt"/></svg></span><span data-en="Faulty electrical switch">مفتاح كهرباء تالف</span></span></td><td data-en="C-21 · Tower C">C-21 · برج ج</td><td><span class="who"><span class="av av-2" data-en="AE">إت</span><span data-en="Al-Itqan Maintenance">الإتقان للصيانة</span></span></td><td><span class="badge b-gray" data-en="Normal">عادي</span></td><td><span class="sla-t" data-en="2 days left">متبقٍ يومان</span></td><td><span class="badge b-amber" data-en="Awaiting parts">بانتظار قطع</span></td></tr>
+            <tr><td><span class="id">SR-2045</span></td><td><span class="cat"><span class="cat-ic" style="background:var(--violet-soft);color:var(--violet)"><svg class="i"><use href="#door"/></svg></span><span data-en="Bedroom door hinge">مفصلة باب غرفة النوم</span></span></td><td data-en="A-03 · Tower A">A-03 · برج أ</td><td><span class="who"><span class="av av-4" data-en="F">ف</span><span data-en="Fahad Al-Qahtani">فهد القحطاني</span></span></td><td><span class="badge b-gray" data-en="Normal">عادي</span></td><td><span class="sla-t" style="color:var(--green)" data-en="Met">ضمن الوقت</span></td><td><span class="badge b-green" data-en="Resolved">تم الحل</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- ============================ VENDOR PORTAL ============================ -->
+<section class="screen" id="vendor">
+ <div class="vdesk">
+  <header class="vtop">
+    <div class="logo" style="padding:0"><span class="logo-mark"><svg viewBox="0 0 40 40"><use href="#logo"/></svg></span><b>Somod</b></div>
+    <span style="width:1px;height:24px;background:var(--line)"></span>
+    <b style="font-size:13px;font-weight:600;color:var(--ink-2)" data-en="Vendor portal">بوابة الموردين</b>
+    <nav class="vtabs" style="margin-inline-start:18px"><span class="vtab on" data-en="Jobs">المهام</span><span class="vtab" data-en="Technicians">الفنيون</span><span class="vtab" data-en="Invoices">الفواتير</span><span class="vtab" data-en="Ratings">التقييمات</span></nav>
+    <div class="ibtn" style="margin-inline-start:auto"><svg class="i"><use href="#bell"/></svg><span class="dot"></span></div>
+    <div class="me" style="padding:0"><span class="av av-2" data-en="AE">إت</span><div><b data-en="Al-Itqan Maintenance">الإتقان للصيانة</b><small data-en="Plumbing · Electrical · HVAC">سباكة · كهرباء · تكييف</small></div></div>
+  </header>
+  <div class="vbody">
+    <div class="vhead"><div><h1 data-en="Good morning, Al-Itqan team">صباح الخير، فريق الإتقان</h1><p data-en="3 new jobs need a response — 2 technicians are available now">٣ مهام جديدة تحتاج ردّك — فنيّان متاحان الآن</p></div><div class="btn-g" style="height:38px;padding:0 15px"><svg class="i" style="width:15px"><use href="#file"/></svg><span data-en="Upload invoice">رفع فاتورة</span></div></div>
+    <div class="kpis">
+      <div class="card kpi"><div class="kpi-l"><span class="kpi-ic" style="background:var(--amber-soft);color:var(--amber)"><svg class="i"><use href="#bell"/></svg></span><span data-en="New jobs">مهام جديدة</span></div><div class="kpi-v"><b data-en="3">٣</b></div><div class="delta" style="color:var(--amber)" data-en="Respond within 2h">الرد خلال ساعتين</div></div>
+      <div class="card kpi"><div class="kpi-l"><span class="kpi-ic" style="background:var(--blue-soft);color:var(--blue)"><svg class="i"><use href="#wrench"/></svg></span><span data-en="In progress">قيد التنفيذ</span></div><div class="kpi-v"><b data-en="8">٨</b></div><div class="delta" style="color:var(--muted);font-weight:400" data-en="Across 3 projects">في ٣ مشاريع</div></div>
+      <div class="card kpi"><div class="kpi-l"><span class="kpi-ic" style="background:var(--green-soft);color:var(--green)"><svg class="i"><use href="#check"/></svg></span><span data-en="Completed this month">منجزة هذا الشهر</span></div><div class="kpi-v"><b data-en="46">٤٦</b></div><div class="delta up">↑ <span data-en="9 vs last month">٩ عن الشهر الماضي</span></div></div>
+      <div class="card kpi"><div class="kpi-l"><span class="kpi-ic" style="background:var(--violet-soft);color:var(--violet)"><svg class="i"><use href="#star"/></svg></span><span data-en="Your rating">تقييمك</span></div><div class="kpi-v"><b data-en="4.7">٤٫٧</b><span data-en="/ 5">/ ٥</span></div><div class="delta up" data-en="Top 10% of vendors">ضمن أفضل ١٠٪ من الموردين</div></div>
+    </div>
+    <div class="vgrid">
+      <div class="card" style="overflow:hidden">
+        <div class="card-h" style="padding-bottom:12px"><b data-en="Jobs awaiting your response">مهام بانتظار ردّك</b><span class="link" data-en="View all">عرض الكل</span></div>
+        <div class="job"><span class="cat-ic" style="width:34px;height:34px;border-radius:10px;background:var(--green-soft);color:var(--green)"><svg class="i"><use href="#snow"/></svg></span><div><b data-en="Bedroom AC not cooling">تكييف غرفة النوم لا يبرّد</b><div class="meta"><small data-en="Al Nakheel · A-12">النخيل · A-12</small><span class="badge b-amber" style="height:20px;font-size:10.5px" data-en="High">عالٍ</span></div></div><small class="sla-t" style="color:var(--amber)" data-en="Due today 4:00 PM">مطلوب اليوم ٤:٠٠ م</small><div class="acts"><span class="btn-o" data-en="Decline">اعتذار</span><span class="btn-g"><svg class="i" style="width:14px"><use href="#user"/></svg><span data-en="Assign technician">تعيين فني</span></span></div></div>
+        <div class="job"><span class="cat-ic" style="width:34px;height:34px;border-radius:10px;background:var(--blue-soft);color:var(--blue)"><svg class="i"><use href="#drop"/></svg></span><div><b data-en="Bathroom leak under sink">تسريب أسفل مغسلة الحمام</b><div class="meta"><small data-en="Al Yasmin · B-05">الياسمين · B-05</small><span class="badge b-red" style="height:20px;font-size:10.5px" data-en="Urgent">عاجل</span></div></div><small class="sla-t" style="color:var(--red)" data-en="Due in 1h 40m">خلال ساعة و٤٠ د</small><div class="acts"><span class="btn-o" data-en="Decline">اعتذار</span><span class="btn-g"><svg class="i" style="width:14px"><use href="#user"/></svg><span data-en="Assign technician">تعيين فني</span></span></div></div>
+        <div class="job"><span class="cat-ic" style="width:34px;height:34px;border-radius:10px;background:var(--amber-soft);color:var(--amber)"><svg class="i"><use href="#bolt"/></svg></span><div><b data-en="Kitchen sockets not working">أفياش المطبخ لا تعمل</b><div class="meta"><small data-en="Al Nakheel · C-21">النخيل · C-21</small><span class="badge b-gray" style="height:20px;font-size:10.5px" data-en="Normal">عادي</span></div></div><small class="sla-t" style="color:var(--muted);font-weight:500" data-en="Due tomorrow">مطلوب غداً</small><div class="acts"><span class="btn-o" data-en="Decline">اعتذار</span><span class="btn-g"><svg class="i" style="width:14px"><use href="#user"/></svg><span data-en="Assign technician">تعيين فني</span></span></div></div>
+        <div class="card-h" style="padding:14px 18px 0;border-top:1px solid var(--line-2)"><b data-en="Today's schedule">جدول اليوم</b><span data-en="Tue, 12 Mar">الثلاثاء ١٢ مارس</span></div>
+        <div class="sched">
+          <div class="slot" style="background:var(--green-soft);color:var(--green-ink)"><b data-en="9:00 — Water heater">٩:٠٠ — سخان مياه</b><span data-en="Ahmed · Al Nakheel A-07">أحمد · النخيل A-07</span></div>
+          <div class="slot" style="background:var(--blue-soft);color:#1f4f9a"><b data-en="11:30 — AC service">١١:٣٠ — صيانة تكييف</b><span data-en="Yousef · Al Yasmin D-14">يوسف · الياسمين D-14</span></div>
+          <div class="slot" style="background:var(--amber-soft);color:#7a560f"><b data-en="2:00 — Lighting">٢:٠٠ — إنارة</b><span data-en="Fahad · Al Nakheel C-09">فهد · النخيل C-09</span></div>
+        </div>
+      </div>
+      <div class="card" style="overflow:hidden">
+        <div class="card-h" style="padding-bottom:12px"><b data-en="Your technicians">فنيّوك</b><span data-en="4 on shift">٤ على رأس العمل</span></div>
+        <div class="tech"><span class="av av-1" data-en="A">أ</span><div><b data-en="Ahmed Al-Zahrani">أحمد الزهراني</b><small data-en="Plumbing">سباكة</small><div class="load"><span class="bar"><i style="width:25%;background:var(--green)"></i></span><span data-en="1 / 4 jobs">١ / ٤ مهام</span></div></div><span class="badge b-green" data-en="Available">متاح</span></div>
+        <div class="tech"><span class="av av-3" data-en="Y">ي</span><div><b data-en="Yousef Al-Shehri">يوسف الشهري</b><small data-en="HVAC">تكييف</small><div class="load"><span class="bar"><i style="width:75%;background:var(--amber)"></i></span><span data-en="3 / 4 jobs">٣ / ٤ مهام</span></div></div><span class="badge b-amber" data-en="On a job">في مهمة</span></div>
+        <div class="tech"><span class="av av-4" data-en="F">ف</span><div><b data-en="Fahad Al-Qahtani">فهد القحطاني</b><small data-en="Electrical">كهرباء</small><div class="load"><span class="bar"><i style="width:50%;background:var(--blue)"></i></span><span data-en="2 / 4 jobs">٢ / ٤ مهام</span></div></div><span class="badge b-blue" data-en="On the way">في الطريق</span></div>
+        <div class="tech"><span class="av av-5" data-en="B">ب</span><div><b data-en="Badr Al-Otaibi">بدر العتيبي</b><small data-en="Carpentry">نجارة</small><div class="load"><span class="bar"><i style="width:0%"></i></span><span data-en="0 / 4 jobs">٠ / ٤ مهام</span></div></div><span class="badge b-green" data-en="Available">متاح</span></div>
+        <div style="padding:12px 18px 16px;border-top:1px solid var(--line-2)"><div class="btn-o" style="width:100%;justify-content:center;height:36px"><svg class="i" style="width:14px"><use href="#plus"/></svg><span data-en="Add technician">إضافة فني</span></div></div>
+      </div>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- ============================ OWNER APP ============================ -->
+<section class="screen" id="owner">
+ <div class="device"><div class="phone">
+  <span class="island"></span>
+  <div class="sbar"><span>9:41</span><span class="ic"><svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 1 4.5a10 10 0 0 1 14 0Z"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="#000" stroke-opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2"/><rect x="25" y="4.5" width="1.5" height="4" rx=".75" fill-opacity=".4"/></svg></span></div>
+  <div class="pscroll">
+    <div class="ph-h"><span class="av av-2" data-en="AM">أم</span><div><small data-en="Good evening">مساء الخير</small><b data-en="Ahmed">أحمد</b></div><span class="ph-bell"><svg class="i"><use href="#bell"/></svg><span class="dot"></span></span></div>
+    <div class="unit">
+      <div class="unit-top"><div><small data-en="Your unit">وحدتك</small><b data-en="A-12 · Al Nakheel Tower">A-12 · برج النخيل</b></div><svg class="i" style="width:20px;height:20px;opacity:.8"><use href="#home"/></svg></div>
+      <div class="wr"><svg class="i" style="width:14px;height:14px"><use href="#shield"/></svg><span data-en="Warranty active until Mar 2027 · 4 assets">الضمان ساري حتى مارس ٢٠٢٧ · ٤ أصول</span></div>
+    </div>
+    <div class="newreq"><svg class="i" style="width:18px;height:18px"><use href="#plus"/></svg><span data-en="New maintenance request">طلب صيانة جديد</span></div>
+    <div class="cats">
+      <div class="cat-b"><span class="cat-ic" style="background:var(--blue-soft);color:var(--blue)"><svg class="i"><use href="#drop"/></svg></span><span data-en="Plumbing">سباكة</span></div>
+      <div class="cat-b"><span class="cat-ic" style="background:var(--amber-soft);color:var(--amber)"><svg class="i"><use href="#bolt"/></svg></span><span data-en="Electrical">كهرباء</span></div>
+      <div class="cat-b"><span class="cat-ic" style="background:var(--green-soft);color:var(--green)"><svg class="i"><use href="#snow"/></svg></span><span data-en="AC">تكييف</span></div>
+      <div class="cat-b"><span class="cat-ic" style="background:var(--violet-soft);color:var(--violet)"><svg class="i"><use href="#door"/></svg></span><span data-en="Carpentry">نجارة</span></div>
+    </div>
+    <div class="sec-t"><span style="color:var(--ink);font-size:15px" data-en="Current request">طلبك الحالي</span><span>SR-2047</span></div>
+    <div class="track">
+      <div class="track-h"><div><b data-en="Bedroom AC not cooling">تكييف غرفة النوم لا يبرّد</b><small data-en="Submitted today · 10:12 AM">قُدّم اليوم · ١٠:١٢ ص</small></div><span class="badge b-blue" data-en="On the way">في الطريق</span></div>
+      <div class="steps">
+        <div class="st done"><i><svg class="i"><use href="#check"/></svg></i><span data-en="Received">استلام</span></div>
+        <div class="st done"><i><svg class="i"><use href="#check"/></svg></i><span data-en="Assigned">تعيين</span></div>
+        <div class="st now"><i></i><span data-en="On the way">في الطريق</span></div>
+        <div class="st"><i></i><span data-en="Resolved">تم الحل</span></div>
+      </div>
+      <div class="eta"><span class="av av-3" data-en="Y">ي</span><div><b data-en="Yousef · AC technician">يوسف · فني تكييف</b><small><span data-en="★ 4.9 · Arrives in about 25 min">★ ٤٫٩ · يصل خلال ٢٥ دقيقة تقريباً</span></small></div><span class="call"><svg class="i" style="width:17px;height:17px"><use href="#phone"/></svg></span></div>
+    </div>
+    <div class="sec-t"><span style="color:var(--ink);font-size:15px" data-en="Previous">السابقة</span><span data-en="View all">عرض الكل</span></div>
+    <div class="mini"><span class="cat-ic" style="width:36px;height:36px;border-radius:11px;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center"><svg class="i"><use href="#drop"/></svg></span><div><b data-en="Kitchen sink leak">تسريب مغسلة المطبخ</b><small data-en="Resolved in 1 day · You rated ★★★★★">حُلّ خلال يوم · قيّمته ★★★★★</small></div><span class="badge b-green" data-en="Resolved">تم الحل</span></div>
+  </div>
+  <nav class="tabbar">
+    <span class="tb on"><svg class="i"><use href="#home"/></svg><span data-en="Home">الرئيسية</span></span>
+    <span class="tb"><svg class="i"><use href="#list"/></svg><span data-en="Requests">طلباتي</span></span>
+    <span class="tb"><svg class="i"><use href="#shield"/></svg><span data-en="Warranties">الضمانات</span></span>
+    <span class="tb"><svg class="i"><use href="#user"/></svg><span data-en="Account">حسابي</span></span>
+  </nav>
+  <span class="home-ind"></span>
+ </div></div>
+</section>
+
+<!-- ============================ TECHNICIAN APP ============================ -->
+<section class="screen" id="tech">
+ <div class="device"><div class="phone">
+  <span class="island"></span>
+  <div class="sbar"><span>9:41</span><span class="ic"><svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 1 4.5a10 10 0 0 1 14 0Z"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="#000" stroke-opacity=".4"/><rect x="2" y="2" width="14" height="9" rx="2"/><rect x="25" y="4.5" width="1.5" height="4" rx=".75" fill-opacity=".4"/></svg></span></div>
+  <div class="pscroll">
+    <div class="ph-h"><span class="av av-1" data-en="K">خ</span><div><small data-en="Tuesday, 12 March">الثلاثاء، ١٢ مارس</small><b data-en="Hello, Khalid">مرحباً، خالد</b></div><span class="avail"><span class="tgl"></span><span data-en="Available">متاح</span></span></div>
+    <div class="dayp"><div class="dayp-h"><b data-en="Today's jobs">مهام اليوم</b><span data-en="1 of 3 done">١ من ٣ مكتملة</span></div><div class="bar"><i style="width:33%;background:var(--green)"></i></div></div>
+    <div class="job-card">
+      <div class="map">
+        <svg viewBox="0 0 354 118" preserveAspectRatio="none"><rect width="354" height="118" fill="#e7ede6"/><path d="M-10 84 C80 70 150 96 240 70 S330 40 370 48" stroke="#fff" stroke-width="14" fill="none"/><path d="M60 -10 L90 130" stroke="#fff" stroke-width="10"/><path d="M250 -10 L230 130" stroke="#fff" stroke-width="9"/><path d="M-10 30 L370 22" stroke="#fff" stroke-width="7"/><rect x="110" y="34" width="56" height="26" rx="4" fill="#d9e3d8"/><rect x="268" y="72" width="70" height="30" rx="4" fill="#d9e3d8"/><rect x="12" y="44" width="38" height="22" rx="4" fill="#cfe1cb"/><path d="M40 98 C100 88 150 70 205 52" stroke="#087b62" stroke-width="4" stroke-dasharray="1 7" stroke-linecap="round" fill="none"/><circle cx="40" cy="98" r="7" fill="#087b62" stroke="#fff" stroke-width="3"/></svg>
+        <span class="pin"></span>
+        <span class="dist"><svg class="i" style="width:13px;height:13px;color:var(--green)"><use href="#nav"/></svg><span data-en="4.2 km · 12 min">٤٫٢ كم · ١٢ دقيقة</span></span>
+      </div>
+      <div class="jc-b">
+        <div class="jc-top"><span class="badge b-red" data-en="Urgent">عاجل</span><span class="id" style="font-size:12px;color:var(--muted)">SR-2048</span></div>
+        <h3 data-en="Water leak — kitchen">تسريب مياه — المطبخ</h3>
+        <div class="jc-meta"><span><svg class="i"><use href="#pin"/></svg><span data-en="Al Yasmin · Tower B · B-05">الياسمين · برج ب · B-05</span></span><span><svg class="i"><use href="#clock"/></svg><span data-en="9:00 – 10:00 AM">٩:٠٠ – ١٠:٠٠ ص</span></span></div>
+        <div class="check">
+          <div class="ck ok"><i><svg class="i"><use href="#check"/></svg></i><span data-en="Confirm visit time with owner">تأكيد الموعد مع المالك</span></div>
+          <div class="ck"><i></i><span data-en="Shut off water supply">إغلاق محبس المياه</span></div>
+          <div class="ck"><i></i><span data-en="Photos before & after repair">صور قبل وبعد الإصلاح</span></div>
+        </div>
+        <div class="photos"><i style="background:linear-gradient(135deg,#9fb4c4,#5f7686)"></i><i style="background:linear-gradient(135deg,#c9b89c,#8c785a)"></i><i class="add"><svg class="i" style="width:20px;height:20px"><use href="#cam"/></svg></i></div>
+        <div class="jc-acts"><span class="jc-call"><svg class="i" style="width:19px;height:19px"><use href="#phone"/></svg></span><span class="start"><svg class="i" style="width:16px;height:16px;fill:currentColor;stroke:none"><path d="M7 4v16l13-8Z"/></svg><span data-en="Start job">ابدأ العمل</span></span></div>
+      </div>
+    </div>
+    <div class="sec-t" style="margin-top:14px"><span style="color:var(--ink);font-size:15px" data-en="Up next">التالي</span><span data-en="2 jobs">مهمتان</span></div>
+    <div class="mini"><span class="cat-ic" style="width:36px;height:36px;border-radius:11px;background:var(--green-soft);color:var(--green);display:grid;place-items:center"><svg class="i"><use href="#snow"/></svg></span><div><b data-en="AC not cooling">تكييف لا يبرّد</b><small data-en="Al Nakheel A-12 · 11:30 AM">النخيل A-12 · ١١:٣٠ ص</small></div><span class="badge b-amber" data-en="High">عالٍ</span></div>
+  </div>
+  <nav class="tabbar">
+    <span class="tb on"><svg class="i"><use href="#list"/></svg><span data-en="Jobs">المهام</span></span>
+    <span class="tb"><svg class="i"><use href="#cal"/></svg><span data-en="Schedule">الجدول</span></span>
+    <span class="tb"><svg class="i"><use href="#bell"/></svg><span data-en="Alerts">التنبيهات</span></span>
+    <span class="tb"><svg class="i"><use href="#user"/></svg><span data-en="Profile">حسابي</span></span>
+  </nav>
+  <span class="home-ind"></span>
+ </div></div>
+</section>
+
+<script>
+const q = new URLSearchParams(location.search);
+const lang = q.get('lang') === 'en' ? 'en' : 'ar';
+const screen = q.get('s') || 'admin';
+document.getElementById(screen).classList.add('on');
+// request chart: received vs resolved, 6 months
+const months = { ar:['أكتوبر','نوفمبر','ديسمبر','يناير','فبراير','مارس'], en:['Oct','Nov','Dec','Jan','Feb','Mar'] };
+const data = [[62,55],[71,66],[58,56],[84,77],[96,90],[103,97]];
+const toAr = s => String(s).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+const bars = document.querySelector('#admin .bars'), ax = document.querySelector('#admin .ax-x');
+if (bars) {
+  const y = v => 155 - v * (135 / 120), w = 26, step = 590 / 6;
+  const rtl = lang === 'ar', left = rtl ? 10 : 40;
+  if (rtl) {
+    document.querySelectorAll('#admin svg line').forEach(l => { l.setAttribute('x1', 10); l.setAttribute('x2', 600); });
+    document.querySelectorAll('.ax-y text').forEach(t => { t.setAttribute('x', 632); t.setAttribute('text-anchor', 'end'); });
+  }
+  data.forEach(([r, d], i) => {
+    const slot = rtl ? 5 - i : i;
+    const x0 = left + step * slot + step / 2 - w - 2;
+    bars.insertAdjacentHTML('beforeend', `<rect x="${x0}" y="${y(r)}" width="${w}" height="${155 - y(r)}" rx="5" fill="#cfe5da"/><rect x="${x0 + w + 4}" y="${y(d)}" width="${w}" height="${155 - y(d)}" rx="5" fill="#087b62"/>`);
+    ax.insertAdjacentHTML('beforeend', `<text x="${left + step * slot + step / 2}" y="180" text-anchor="middle">${months[lang][i]}</text>`);
+  });
+}
+if (lang === 'en') {
+  document.documentElement.lang = 'en'; document.documentElement.dir = 'ltr';
+  document.querySelectorAll('[data-en]').forEach(el => { el.textContent = el.dataset.en; });
+  const ring = document.querySelector('.ring-t'); if (ring) ring.textContent = '92%';
+  // the chart is drawn left-to-right in both languages; mirror the axis labels side
+} else {
+  document.querySelectorAll('.ax-y text').forEach(t => t.textContent = toAr(t.textContent));
+}
+</script>
+</body>
+</html>
