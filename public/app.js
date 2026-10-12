@@ -70,7 +70,6 @@ function applyLanguage(nextLanguage) {
     const value = copy[language][node.dataset.i18nAlt];
     if (value !== undefined) node.setAttribute("alt", value);
   });
-  document.querySelector(".hero-photo")?.setAttribute("alt", copy[language]["hero.imageAlt"]);
   document.querySelectorAll("[data-shot]").forEach((img) => { img.src = `assets/screens/${img.dataset.shot}-${language}.webp`; });
   const activeTab = document.querySelector(".experience-tab.is-active [data-i18n]");
   if (activeTab) document.querySelector(".window-address b").textContent = activeTab.textContent;
@@ -156,7 +155,7 @@ tabs.forEach((tab, index) => {
     activatePanel(tabs[next].dataset.panel, true);
   });
 });
-if (tabs.length) activatePanel("admin");
+if (tabs.length) activatePanel("owner");
 
 const dialog = document.getElementById("demo-dialog");
 const planInput = document.getElementById("selected-plan");
