@@ -31,5 +31,32 @@ const shots = [
       console.log(`${shot.s}-${lang}.webp`, Math.round(fs.statSync(webp).size / 1024) + ' KB');
     }
   }
+  // Cropped views used in the hero and the features section
+  const crops = [
+    { name: 'hero', s: 'admin', union: ['.kpis', '.mid'], pad: 12 },
+    { name: 'feat-requests', s: 'admin', sel: '.card:has(table)' },
+    { name: 'feat-sla', s: 'admin', sel: '.card.sla' },
+    { name: 'feat-owner', s: 'owner', sel: '.track' },
+  ];
+  for (const lang of ['ar', 'en']) {
+    for (const c of crops) {
+      const page = await browser.newPage({ viewport: { width: 1400, height: 1000 }, deviceScaleFactor: 2 });
+      await page.goto(`${src}?s=${c.s}&lang=${lang}`);
+      await page.evaluate(() => document.fonts.ready);
+      const png = path.join(tmp, `${c.name}-${lang}.png`);
+      if (c.union) {
+        const boxes = await Promise.all(c.union.map((sel) => page.locator(`#${c.s} ${sel}`).boundingBox()));
+        const x = Math.min(...boxes.map((b) => b.x)) - c.pad, y = Math.min(...boxes.map((b) => b.y)) - c.pad;
+        const r = Math.max(...boxes.map((b) => b.x + b.width)) + c.pad, btm = Math.max(...boxes.map((b) => b.y + b.height)) + c.pad;
+        await page.screenshot({ path: png, clip: { x, y, width: r - x, height: btm - y } });
+      } else {
+        await page.locator(`#${c.s} ${c.sel}`).screenshot({ path: png });
+      }
+      await page.close();
+      const webp = path.join(out, `${c.name}-${lang}.webp`);
+      execFileSync('python3', ['-I', '-c', 'import sys;from PIL import Image;im=Image.open(sys.argv[1]);print(im.size);im.save(sys.argv[2],"WEBP",quality=86,method=6)', png, webp], { stdio: 'inherit' });
+      console.log(`${c.name}-${lang}.webp`, Math.round(fs.statSync(webp).size / 1024) + ' KB');
+    }
+  }
   await browser.close();
 })();

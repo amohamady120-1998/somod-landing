@@ -98,3 +98,59 @@ html[dir="ltr"] .owner-demo,html[dir="ltr"] .tech-demo{direction:ltr}
 .demo-dialog::-webkit-scrollbar{width:8px}
 .demo-dialog::-webkit-scrollbar-track{background:transparent}
 .demo-dialog::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--muted) 40%,transparent);border-radius:8px;border:2px solid var(--surface)}
+
+/* ===== review round: hero, features, about, faq, type ===== */
+.hero-grid{grid-template-columns:minmax(0,1fr);min-height:0;gap:42px;padding-bottom:64px}
+.hero-copy{max-width:720px}
+.hero-visual{width:100%}
+.hero-shot-phone{display:none}
+@media(max-width:820px){
+  .hero-shot-desk{display:none}
+  .hero-shot-phone{display:block;width:auto;height:420px;margin:0 auto;filter:drop-shadow(0 22px 28px rgba(9,40,32,.22))}
+}
+.challenge-card p,.feature-row p,.feature-minor p,.step-card p,.section-heading p,.proof-heading p,.contact-heading>p,.about-copy p,.faq-list p,.hero-lead{font-size:15px;line-height:1.95;color:color-mix(in srgb,var(--ink) 74%,var(--paper))}
+.feature-rows{display:flex;flex-direction:column;gap:22px;margin-top:44px}
+.feature-row{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);align-items:center;gap:40px;padding:28px;border:1px solid var(--line);border-radius:22px;background:var(--surface)}
+.feature-row-flip .feature-row-copy{order:2}
+.feature-row-wide{grid-template-columns:minmax(0,1fr)}
+.feature-row-wide .feature-row-copy{max-width:560px}
+.feature-row h3{margin:14px 0 8px;font-size:21px}
+.feature-row p{margin:0}
+.feature-shot{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:var(--paper);line-height:0}
+.feature-shot img{display:block;width:100%;height:auto}
+.feature-minor{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;margin-top:40px}
+.feature-minor h3{margin:12px 0 6px;font-size:17px}
+.feature-minor p{margin:0}
+.testimonials-single{grid-template-columns:minmax(0,1fr)}
+.quote-placeholder blockquote{color:var(--muted)}
+.quote-logo{display:grid;place-items:center;width:44px;height:44px;border:1.5px dashed var(--line);border-radius:12px;font-size:9px;color:var(--muted)}
+.about-section{background:var(--paper)}
+.about-shell{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
+.about-copy h2{font-size:clamp(30px,3.4vw,42px);margin:0 0 14px}
+.about-copy p{margin:0;max-width:520px}
+.about-team{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.team-card{margin:0;display:flex;flex-direction:column;gap:12px}
+.team-photo{display:grid;place-items:center;aspect-ratio:4/5;border:1.5px dashed var(--line);border-radius:18px;background:var(--surface);color:var(--muted);font-size:12px}
+.team-card figcaption{display:flex;flex-direction:column;line-height:1.5}
+.team-card b{font-size:16px}
+.team-card small{color:var(--muted);font-size:13px}
+.faq-shell{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:56px;align-items:start}
+.faq-heading h2{font-size:clamp(30px,3.4vw,42px);margin:0 0 12px}
+.faq-list{border-top:1px solid var(--line)}
+.faq-list details{border-bottom:1px solid var(--line)}
+.faq-list summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 0;font-size:17px;font-weight:600;cursor:pointer;list-style:none}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-list summary::after{content:"+";flex-shrink:0;font-size:22px;font-weight:400;color:var(--green);transition:transform .2s}
+.faq-list details[open] summary::after{transform:rotate(45deg)}
+.faq-list p{margin:-6px 0 20px}
+.contact-demo{margin-top:22px}
+@media(max-width:820px){
+  .feature-row,.about-shell,.faq-shell{grid-template-columns:minmax(0,1fr);gap:22px}
+  .feature-row{padding:20px}
+  .feature-row-flip .feature-row-copy{order:0}
+  .feature-minor{grid-template-columns:minmax(0,1fr);gap:24px}
+}
+
+.contact-heading .button.contact-demo{display:inline-flex;width:auto;padding:14px 22px;border:0;border-radius:14px;background:var(--green-dark);color:#fff;font-size:14px;font-weight:600;text-decoration:none}
+.contact-heading .button.contact-demo:hover{background:var(--green)}
+:root[data-theme="dark"] .contact-heading .button.contact-demo{background:var(--green);color:#0d1a15}
