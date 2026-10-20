@@ -1,0 +1,4 @@
+project_id = "synkroniza-bd"
+
+[functions.ingest]
+verify_jwt = false

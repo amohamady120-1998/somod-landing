@@ -1,0 +1,27 @@
+# Every morning 06:30 Riyadh time: Etimad tenders, news & signals, the «Leads» mailbox, then the daily emails.
+name: Daily monitoring
+on:
+  schedule:
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node jobs/run-all.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          MS_TENANT_ID: ${{ secrets.MS_TENANT_ID }}
+          MS_CLIENT_ID: ${{ secrets.MS_CLIENT_ID }}
+          MS_CLIENT_SECRET: ${{ secrets.MS_CLIENT_SECRET }}
+          MS_SENDER: ${{ secrets.MS_SENDER }}
+          MS_INBOX: ${{ secrets.MS_INBOX }}
+          MS_INBOX_FOLDER: ${{ secrets.MS_INBOX_FOLDER }}
+          APP_URL: ${{ secrets.APP_URL }}
