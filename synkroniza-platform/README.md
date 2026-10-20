@@ -18,9 +18,10 @@
 |---|---|---|---|
 | الواجهة | نفس شاشات السيستم بالظبط | Cloudflare Pages | مجاني (مسموح تجارياً) |
 | قاعدة البيانات + الدخول + الملفات | كل البيانات، الصلاحيات، ملفات الشركة والكراسات | Supabase | مجاني: 500MB بيانات + 1GB ملفات |
-| الذكاء الاصطناعي | التحليل، كتابة العروض والإيميلات، الخطة اليومية | Gemini (مجاني) ← Claude (لما يبقى فيه ميزانية) | مجاني ← بالاستخدام |
+| الذكاء الاصطناعي | التحليل، كتابة العروض والإيميلات، الخطة اليومية | **Claude ← ChatGPT ← Gemini** (لو واحد وقف أو رصيده خلص بينقل للي بعده تلقائي) | Gemini مجاني، والباقي بالاستخدام |
 | المهام اليومية | اعتماد، الأخبار، صندوق الإيميل، إيميل الخطة والتقرير | GitHub Actions | مجاني |
 | الليدز | شركات وصناع قرار | Apollo (API) + استيراد CSV من أي مصدر | حسب خطة Apollo |
+| كشف الإيميلات والموبايلات | زرار جنب كل جهة اتصال | **Lusha ← Apollo ← Hunter** (أول مصدر يلاقي بيكسب) | Hunter فيه خطة مجانية، والباقي حسب خطتك |
 | الإيميل | مسودات، إرسال، قراءة التنبيهات | Microsoft 365 بتاع الشركة | ضمن اشتراككم |
 | Manus وأي أداة تانية | تبعت ليدز للمنصة مباشرة | رابط استقبال (Webhook) | مجاني |
 
@@ -28,9 +29,10 @@
 
 ## الإعداد خطوة بخطوة (حوالي 45 دقيقة، مرة واحدة)
 
-### 1) حط الكود في Repository خاص
-1. على GitHub اعمل Repository جديد **Private** باسم `synkroniza-bd`.
-2. ارفع **محتوى** الفولدر ده (`synkroniza-platform`) على المستوى الرئيسي للـ Repository. يعني `README.md` و`web/` و`.github/` يبقوا في الجذر، مش جوه فولدر.
+### 1) خلّي الـ Repository خاص (Private)
+الكود موجود بالفعل في `synkroniza-bd`. من **Settings → General → Danger Zone → Change visibility** خليه **Private**. السبب:
+- الكود بتاع الشركة مايبقاش متاح لأي حد.
+- GitHub بيوقف المهام اليومية تلقائي في الـ Repos العامة لو مفيش تعديلات لمدة 60 يوم.
 
 ### 2) Supabase (قاعدة البيانات)
 1. ادخل [supabase.com](https://supabase.com) واعمل حساب، وبعدين **New project**:
@@ -55,9 +57,12 @@
 | `SUPABASE_PROJECT_REF` | ✅ | خطوة 2 |
 | `SUPABASE_DB_URL` | ✅ | خطوة 2 |
 | `SUPABASE_ACCESS_TOKEN` | ✅ | خطوة 2 |
-| `GEMINI_API_KEY` | للذكاء المجاني | خطوة 6 |
-| `ANTHROPIC_API_KEY` | لما يبقى فيه ميزانية | [console.anthropic.com](https://console.anthropic.com) |
+| `ANTHROPIC_API_KEY` | الذكاء — الأول في الترتيب | [console.anthropic.com](https://console.anthropic.com) |
+| `OPENAI_API_KEY` | الذكاء — التاني (ChatGPT) | [platform.openai.com](https://platform.openai.com/api-keys) |
+| `GEMINI_API_KEY` | الذكاء — التالت (فيه خطة مجانية) | خطوة 6 |
 | `APOLLO_API_KEY` | لـ Apollo | خطوة 7 |
+| `LUSHA_API_KEY` | كشف الإيميلات والموبايلات | خطوة 7 |
+| `HUNTER_API_KEY` | كشف الإيميلات (مجاني 25 بحث شهرياً) | خطوة 7 |
 | `MS_TENANT_ID`, `MS_CLIENT_ID`, `MS_CLIENT_SECRET`, `MS_SENDER`, `MS_DOMAIN` | لإيميل الشركة | خطوة 8 |
 | `MS_INBOX`, `MS_INBOX_FOLDER` | اختياري | الصندوق والفولدر اللي بنقرا منه التنبيهات. الافتراضي: `MS_SENDER` و`Leads` |
 | `INGEST_KEY` | لـ Manus | أي كلمة سر طويلة تختارها (30 حرف مثلاً) |
@@ -81,16 +86,36 @@
 4. **Deploy**. هتاخد رابط زي `synkroniza-bd.pages.dev`، وتقدر بعدين تربطه بدومين الشركة (مثلاً `bd.synkroniza.com`) من **Custom domains**.
 5. ارجع لـ Supabase، **Authentication → URL Configuration**، وحط الرابط ده في **Site URL** و**Redirect URLs**.
 
-### 6) الذكاء الاصطناعي (مجاني دلوقتي)
-1. [aistudio.google.com](https://aistudio.google.com) ← **Get API key** ← حطه في `GEMINI_API_KEY` ← شغّل Setup Supabase.
-2. لما يبقى فيه ميزانية: حط `ANTHROPIC_API_KEY` وشغّل Setup Supabase تاني.
-   - المنصة بتفضّل Claude تلقائي لو مفتاحه موجود.
-   - عشان تجبر مزوّد معيّن: `AI_PROVIDER` = `anthropic` أو `gemini` أو `openai`.
-   - أي مزوّد متوافق مع OpenAI (مثلاً OpenRouter أو Groq) شغّال برضه: `OPENAI_API_KEY` + `OPENAI_BASE_URL` + `OPENAI_MODEL`.
+### 6) الذكاء الاصطناعي: Claude ← ChatGPT ← Gemini
+المنصة بتجرّب بالترتيب:
+- **Claude** الأول.
+- لو مفتاحه مش موجود، أو رصيده خلص، أو وقف، تنقل لـ **ChatGPT**.
+- وبعده **Gemini**.
+
+كل ده تلقائي ومن غير ما حد يحس. حط المفاتيح اللي عندك بس، وشغّل Setup Supabase:
+1. **Claude:** [console.anthropic.com](https://console.anthropic.com) ← API Keys ← `ANTHROPIC_API_KEY`.
+2. **ChatGPT:** [platform.openai.com](https://platform.openai.com/api-keys) ← `OPENAI_API_KEY`.
+   - الموديل الافتراضي `gpt-4o-mini`. تقدر تغيّره بـ `OPENAI_MODEL`.
+   - ⚠️ اشتراك ChatGPT Plus مش هو الـ API. الـ API رصيد منفصل بتشحنه من نفس الصفحة.
+3. **Gemini:** [aistudio.google.com](https://aistudio.google.com) ← **Get API key** ← `GEMINI_API_KEY`. فيه خطة مجانية.
+
+نصايح:
+- عشان تبدأ بصفر تكلفة: حط Gemini بس.
+- عشان تغيّر الترتيب: `AI_ORDER` = مثلاً `gemini,anthropic,openai`.
+- من «الربط والإعدادات ← جرّب» بتشوف مين رد، ومين وقف قبله.
 
 > ⚠️ في الخطة المجانية، Google ممكن تستخدم البيانات لتحسين خدماتها. مابيعتبرش مشكلة لنصوص الكراسات (هي منشورة أصلاً). لكن لو هتحط بيانات حساسة، انقل لـ Claude أو لخطة Gemini المدفوعة.
 
-### 7) Apollo
+### 7) Apollo وLusha وHunter
+**Lusha:** بما إنك مسجّل بإيميل الشركة:
+1. ادخل Lusha ← **Settings → API** ← اعمل مفتاح ← `LUSHA_API_KEY`.
+2. لو مفيش صفحة API، يبقى خطتك مابتشملهوش. في الحالة دي استخدم إضافة Lusha على Chrome وانت فاتح LinkedIn، وانسخ البيانات للسيستم.
+
+**Hunter:** اعمل حساب مجاني على [hunter.io](https://hunter.io) ← **API** ← `HUNTER_API_KEY`. المجاني فيه 25 بحث شهرياً.
+
+**الترتيب:** الافتراضي Lusha ← Apollo ← Hunter. تقدر تغيّره بـ `ENRICH_ORDER`. أول مصدر يلاقي الإيميل أو الموبايل بيوقف الباقي، فمش هيتصرف رصيد على الفاضي.
+
+**Apollo:**
 1. في Apollo: **Settings → Integrations → API → Create new key** ← `APOLLO_API_KEY` ← شغّل Setup Supabase.
 2. من المنصة: **الربط والإعدادات ← Apollo ← جرّب**.
 3. لو ظهر خطأ صلاحيات، فخطتك مابتسمحش بالـ API. ساعتها:

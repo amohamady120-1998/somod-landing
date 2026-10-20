@@ -1,6 +1,7 @@
-// Integrations gateway: Apollo (companies & decision makers) and Microsoft 365 (email drafts / send).
+// Integrations gateway: Apollo (companies & decision makers), contact enrichment (Lusha → Apollo → Hunter)
+// and Microsoft 365 (email drafts / send).
 // Every integration is optional — when its secrets are missing the call answers {error:{code:"not_configured"}}.
-//   APOLLO_API_KEY
+//   APOLLO_API_KEY, LUSHA_API_KEY, HUNTER_API_KEY, ENRICH_ORDER (default "lusha,apollo,hunter")
 //   MS_TENANT_ID, MS_CLIENT_ID, MS_CLIENT_SECRET, MS_SENDER (shared mailbox or a team member), MS_DOMAIN (e.g. synkroniza.com)
 import { cors, reply, fail, env, caller } from "../_shared/common.ts";
 
@@ -44,6 +45,61 @@ async function apollo(path: string, body: unknown, method = "POST") {
   return j;
 }
 
+// ---------- contact enrichment: first source that finds an email or phone wins ----------
+const EMAIL_RE = /^[^@\s"<>]+@[^@\s"<>]+\.[a-z]{2,}$/i;
+function findEmail(o: unknown): string {
+  if (typeof o === "string") return EMAIL_RE.test(o) && !/not_unlocked|example\.com|domain\.com/i.test(o) ? o : "";
+  if (Array.isArray(o)) { for (const x of o) { const r = findEmail(x); if (r) return r; } return ""; }
+  if (o && typeof o === "object") { for (const v of Object.values(o)) { const r = findEmail(v); if (r) return r; } }
+  return "";
+}
+function findPhone(o: unknown): string {
+  if (Array.isArray(o)) { for (const x of o) { const r = findPhone(x); if (r) return r; } return ""; }
+  if (o && typeof o === "object") {
+    for (const [k, v] of Object.entries(o)) {
+      if (/^(number|sanitized_number|raw_number|internationalNumber|phone|mobile|phone_number)$/i.test(k) && typeof v === "string" && /\d{7,}/.test(v.replace(/\D/g, ""))) return v;
+      const r = findPhone(v); if (r) return r;
+    }
+  }
+  return "";
+}
+type Who = { first: string; last: string; domain: string; company: string; linkedin: string };
+const ENRICHERS: Record<string, { key: string; run: (w: Who) => Promise<unknown> }> = {
+  lusha: { key: "LUSHA_API_KEY", run: async (w) => {
+    const q = new URLSearchParams({ firstName: w.first, lastName: w.last, ...(w.domain ? { companyDomain: w.domain } : { companyName: w.company }), ...(w.linkedin ? { linkedinUrl: w.linkedin } : {}) });
+    const r = await fetch("https://api.lusha.com/v2/person?" + q, { headers: { api_key: env("LUSHA_API_KEY") } });
+    const j = await r.json().catch(() => ({})); if (!r.ok) throw { code: r.status === 429 ? "rate_limited" : "tool_error", message: "Lusha " + r.status + " " + (j?.message ?? "") }; return j; } },
+  apollo: { key: "APOLLO_API_KEY", run: (w) => apollo("/people/match", { first_name: w.first, last_name: w.last, domain: w.domain || undefined, organization_name: w.company || undefined, linkedin_url: w.linkedin || undefined, reveal_personal_emails: false }) },
+  hunter: { key: "HUNTER_API_KEY", run: async (w) => {
+    if (!w.domain) throw { code: "tool_error", message: "Hunter needs the company domain" };
+    const q = new URLSearchParams({ domain: w.domain, first_name: w.first, last_name: w.last, api_key: env("HUNTER_API_KEY") });
+    const r = await fetch("https://api.hunter.io/v2/email-finder?" + q); const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw { code: r.status === 429 ? "rate_limited" : "tool_error", message: "Hunter " + r.status }; return j; } },
+};
+export function enrichChain(): string[] {
+  const order = (env("ENRICH_ORDER") || "lusha,apollo,hunter").split(",").map((x) => x.trim().toLowerCase()).filter((x) => ENRICHERS[x]);
+  return order.filter((p) => env(ENRICHERS[p].key));
+}
+async function enrich(b: Record<string, any>) {
+  const parts = String(b.name ?? "").trim().split(/\s+/);
+  const w: Who = { first: String(b.first ?? parts[0] ?? ""), last: String(b.last ?? parts.slice(1).join(" ")), domain: String(b.domain ?? "").toLowerCase(), company: String(b.company ?? ""), linkedin: String(b.linkedin ?? "") };
+  const chain = enrichChain();
+  if (!chain.length) throw { code: "not_configured", message: "No enrichment source is connected (LUSHA_API_KEY, APOLLO_API_KEY or HUNTER_API_KEY)." };
+  const tried: { source: string; result: string }[] = [];
+  let email = "", phone = "", source = "";
+  for (const src of chain) {
+    try {
+      const j = await ENRICHERS[src].run(w);
+      const e = findEmail(j), p = findPhone(j);
+      tried.push({ source: src, result: e || p ? "found" : "no data" });
+      if (!email && e) { email = e; source = source || src; }
+      if (!phone && p) { phone = p; source = source || src; }
+      if (email && phone) break;
+    } catch (err) { tried.push({ source: src, result: String((err as { message?: string }).message ?? "error").slice(0, 120) }); }
+  }
+  return { email, phone, source, tried };
+}
+
 let msToken = { value: "", exp: 0 };
 async function graphToken() {
   if (!env("MS_TENANT_ID") || !env("MS_CLIENT_ID") || !env("MS_CLIENT_SECRET")) throw { code: "not_configured", message: "Microsoft 365 is not connected." };
@@ -82,7 +138,8 @@ Deno.serve(async (req) => {
       case "status":
         return reply({
           ai: !!(env("ANTHROPIC_API_KEY") || env("GEMINI_API_KEY") || env("OPENAI_API_KEY")),
-          aiProvider: env("AI_PROVIDER") || (env("ANTHROPIC_API_KEY") ? "anthropic" : env("GEMINI_API_KEY") ? "gemini" : env("OPENAI_API_KEY") ? "openai" : ""),
+          aiChain: (env("AI_ORDER") || "anthropic,openai,gemini").split(",").map((x) => x.trim()).filter((x) => env(({ anthropic: "ANTHROPIC_API_KEY", openai: "OPENAI_API_KEY", gemini: "GEMINI_API_KEY" } as Record<string, string>)[x] ?? "")),
+          enrich: enrichChain(),
           apollo: !!env("APOLLO_API_KEY"),
           microsoft: !!(env("MS_TENANT_ID") && env("MS_CLIENT_ID") && env("MS_CLIENT_SECRET")),
           sender: env("MS_SENDER"),
@@ -116,6 +173,8 @@ Deno.serve(async (req) => {
         }));
         return reply({ contacts });
       }
+      case "contact.enrich":
+        return reply(await enrich(b));
       case "mail.draft": {
         const from = senderFor(who.email);
         if (!from) return fail("not_configured", "Set MS_SENDER.");

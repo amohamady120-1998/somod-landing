@@ -260,6 +260,7 @@
           body = { action: "apollo.companies", keys: list(/is_similar_to \(([^)]*)\)/), sizes: list(/company_size in \(([^)]*)\)/), sa: true };
         }
       } else if (server === "Clay" && tool === "search-contacts") body = { action: "apollo.people", domain: (input.companyIdentifiers || [])[0] };
+      else if (server === "Enrich" && tool === "contact") body = Object.assign({ action: "contact.enrich" }, input);
       else if (server === "Gmail" && tool === "create_draft") body = { action: "mail.draft", to: input.to, subject: input.subject, body: input.body };
       else throw { code: "not_in_manifest", message: server + "/" + tool };
       const memoKey = body.action === "apollo.companies" ? JSON.stringify([body.keys, body.sizes]) : "";
@@ -345,7 +346,12 @@
     const J = jobs || {};
     const jobRow = (k, t) => { const j = J[k]; return '<div class="fu-item ' + (j && j.ok === false ? "over" : "") + '"><span class="stripe"' + (j && j.ok ? ' style="background:var(--good)"' : "") + '></span><div><div class="t">' + t + '</div><div class="s">' + (j ? esc(j.msg || "") : "لسه مااشتغلتش") + '</div></div><span class="d">' + (j && j.at ? esc(new Date(j.at).toLocaleString("ar-SA")) : "") + "</span></div>"; };
     let h = '<section class="panel"><div class="panel-h"><h2>حالة الربط</h2><span class="meta">المفاتيح بتتحط كـ Secrets في GitHub — راجع دليل الإعداد</span></div>';
-    h += row(s.ai, "الذكاء الاصطناعي" + (s.aiProvider ? " — " + esc(s.aiProvider) : ""), s.ai ? "شغّال. التحليل والكتابة والخطة اليومية متاحين." : "مش متوصّل. أسهل بداية مجانية: مفتاح Gemini من Google AI Studio (GEMINI_API_KEY). وقت ما يبقى فيه ميزانية: ANTHROPIC_API_KEY.", s.ai ? '<button class="btn btn-sm" data-p="testAI">جرّب</button>' : "");
+    const AIN = { anthropic: "Claude", openai: "ChatGPT", gemini: "Gemini" };
+    const chain = (s.aiChain || []).map((k) => AIN[k] || k);
+    h += row(s.ai, "الذكاء الاصطناعي" + (chain.length ? " — " + esc(chain.join(" ← ")) : ""), s.ai ? "شغّال. لو الأول وقف أو رصيده خلص، المنصة بتنقل للي بعده تلقائي." : "مش متوصّل. الترتيب: Claude ← ChatGPT ← Gemini. حط أي مفتاح منهم (ANTHROPIC_API_KEY / OPENAI_API_KEY / GEMINI_API_KEY) — Gemini له خطة مجانية.", s.ai ? '<button class="btn btn-sm" data-p="testAI">جرّب</button>' : "");
+    const EN = { lusha: "Lusha", apollo: "Apollo", hunter: "Hunter" };
+    const en = (s.enrich || []).map((k) => EN[k] || k);
+    h += row(en.length, "كشف الإيميلات والموبايلات" + (en.length ? " — " + esc(en.join(" ← ")) : ""), en.length ? "زرار «اكشف الإيميل/الموبايل» ظاهر جنب كل جهة اتصال ناقصة. بيجرّب المصادر بالترتيب لحد ما يلاقي." : "حط LUSHA_API_KEY و/أو HUNTER_API_KEY (Hunter عنده خطة مجانية) — Apollo بيتستخدم كمان لو مفتاحه موجود.", "");
     h += row(s.apollo, "Apollo — شركات وصناع قرار", s.apollo ? "متوصّل. «توليد الليدز» بيستخدمه." : "حط APOLLO_API_KEY (من Apollo ← Settings ← Integrations ← API). لو الخطة المجانية مش بتسمح بالـ API، استخدم «استيراد» بملف CSV.", s.apollo ? '<button class="btn btn-sm" data-p="testApollo">جرّب</button>' : "");
     h += row(s.microsoft, "Microsoft 365 — إيميل الشركة", s.microsoft ? "متوصّل. المسودات والتقارير بتتبعت من " + esc(s.sender || "") + "." : "سجّل تطبيق في Microsoft Entra واملأ MS_TENANT_ID و MS_CLIENT_ID و MS_CLIENT_SECRET و MS_SENDER.", s.microsoft ? '<button class="btn btn-sm" data-p="testMail">ابعتلي إيميل تجريبي</button>' : "");
     h += row(s.ingest, "استقبال من Manus أو أي أداة", s.ingest ? "شغّال على الرابط:<br><code style=\"user-select:all\">" + esc(CFG.supabaseUrl) + "/functions/v1/ingest</code> مع الهيدر <code>x-ingest-key</code>." : "حط INGEST_KEY (أي كلمة سر طويلة) عشان Manus يقدر يبعت ليدز مباشرة.", "");
@@ -365,7 +371,7 @@
     if (k === "logout") { await sb.auth.signOut(); location.reload(); }
     else if (k === "copyLink") { try { await navigator.clipboard.writeText(location.origin + location.pathname); A.toast("اتنسخ الرابط"); } catch (x) { A.toast(location.origin); } }
     else if (k === "reloadJobs") { jobs = null; A.render(); }
-    else if (k === "testAI") { t.disabled = true; try { const r = await aiCall("قل «تمام» بس.", { modelTier: "quick" }, false); A.toast("الذكاء رد: " + String(r.text).slice(0, 40)); } catch (x) { A.toast("خطأ: " + (x.message || x.code)); } t.disabled = false; }
+    else if (k === "testAI") { t.disabled = true; try { const r = await aiCall("قل «تمام» بس.", { modelTier: "quick" }, false); A.toast("رد من " + (r.provider || "") + (r.tried && r.tried.length ? " (بعد ما " + r.tried.map((x) => x.provider).join(" و") + " وقف)" : "") + ": " + String(r.text).slice(0, 30)); } catch (x) { A.toast("خطأ: " + (x.message || x.code)); } t.disabled = false; }
     else if (k === "testApollo") { t.disabled = true; try { const r = await invoke("integrations", { action: "apollo.company", domain: "stc.com.sa" }); A.toast(Object.keys(r.companies || {}).length ? "Apollo شغّال ✓" : "Apollo رد بس من غير نتايج"); } catch (x) { A.toast("Apollo: " + (x.message || x.code)); } t.disabled = false; }
     else if (k === "testMail") { t.disabled = true; try { await invoke("integrations", { action: "mail.send", to: [profile.email], subject: "تجربة من منصة Synkroniza", body: "لو وصلك الإيميل ده يبقى الربط مع Microsoft 365 شغّال." }); A.toast("اتبعت — شوف إيميلك"); } catch (x) { A.toast("Microsoft: " + (x.message || x.code)); } t.disabled = false; }
   });

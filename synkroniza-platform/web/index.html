@@ -674,6 +674,7 @@ function contactLinks(c){let s='';
  if(c.linkedin&&/^https?:\/\//.test(c.linkedin))s+='<a href="'+esc(c.linkedin)+'" target="_blank" rel="noopener" class="sm">LinkedIn ↗</a>';
  if(c.email)s+='<span class="sm mono" style="user-select:all">'+esc(c.email)+'</span>';
  if(c.phone)s+='<span class="sm mono" style="user-select:all">'+esc(c.phone)+'</span>';
+ if(S.canWrite&&window.SKZ_PLATFORM&&S.mcp&&(!c.email||!c.phone))s+='<button class="linky sm" style="color:var(--accent)" data-k="enrich" data-id="'+esc(c.id)+'">اكشف الإيميل/الموبايل</button>';
  if(S.canWrite)s+='<button class="linky sm" style="color:var(--ink-3)" data-edit-con="'+esc(c.id)+'">تعديل</button>';
  return s||'<span class="sm">—</span>'}
 
@@ -2137,6 +2138,12 @@ document.addEventListener('click',async e=>{
   case 'newsSt':patch('news',d.id,{status:d.st});return;
   case 'monSave':{const o={};['tenderKeywords','newsKeywords','extraWatch','watchMode','digestTo'].forEach(f=>{o[f]=String(bv('mon.'+f,monVal(f))).trim()});if(await saveSettings(o)){unbind('mon.');toast('اتحفظت إعدادات الرصد')}return}
   case 'impGo':impGo();return;
+  case 'enrich':{const c=byId('contacts',d.id);if(!c)return;const a=byId('accounts',c.accountId)||{};t.disabled=true;t.textContent='بدوّر…';
+   try{const r=await mcpCall('Enrich','contact',{name:c.name,company:a.name||'',domain:accDomain(a),linkedin:c.linkedin||''});
+    const up={};if(r&&r.email&&!c.email)up.email=r.email;if(r&&r.phone&&!c.phone)up.phone=r.phone;
+    if(Object.keys(up).length){up.enrichedFrom=r.source||'';await patch('contacts',c.id,up);toast('اتلقى'+(up.email?' الإيميل':'')+(up.phone?' والموبايل':'')+' من '+(r.source||''))}
+    else{toast('مالقيتش بيانات'+(r&&r.tried&&r.tried.length?' ('+r.tried.map(x=>x.source).join(' ← ')+')':''));t.disabled=false;t.textContent='اكشف الإيميل/الموبايل'}}
+   catch(e){toast(mcpErrMsg(e,'مصادر الإيميلات'));t.disabled=false;t.textContent='اكشف الإيميل/الموبايل'}return}
  }
 });
 document.addEventListener('input',e=>{const el=e.target;const b=el.dataset&&el.dataset.bind;if(b)S.bind[b]=el.type==='checkbox'?el.checked:el.value;

@@ -24,8 +24,11 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
           OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-          AI_PROVIDER: ${{ secrets.AI_PROVIDER }}
+          AI_ORDER: ${{ secrets.AI_ORDER }}
           APOLLO_API_KEY: ${{ secrets.APOLLO_API_KEY }}
+          LUSHA_API_KEY: ${{ secrets.LUSHA_API_KEY }}
+          HUNTER_API_KEY: ${{ secrets.HUNTER_API_KEY }}
+          ENRICH_ORDER: ${{ secrets.ENRICH_ORDER }}
           MS_TENANT_ID: ${{ secrets.MS_TENANT_ID }}
           MS_CLIENT_ID: ${{ secrets.MS_CLIENT_ID }}
           MS_CLIENT_SECRET: ${{ secrets.MS_CLIENT_SECRET }}
@@ -34,7 +37,7 @@ jobs:
           INGEST_KEY: ${{ secrets.INGEST_KEY }}
         run: |
           args=()
-          for k in ANTHROPIC_API_KEY CLAUDE_MODEL GEMINI_API_KEY GEMINI_MODEL OPENAI_API_KEY OPENAI_BASE_URL OPENAI_MODEL AI_PROVIDER APOLLO_API_KEY MS_TENANT_ID MS_CLIENT_ID MS_CLIENT_SECRET MS_SENDER MS_DOMAIN INGEST_KEY; do
+          for k in ANTHROPIC_API_KEY CLAUDE_MODEL GEMINI_API_KEY GEMINI_MODEL OPENAI_API_KEY OPENAI_BASE_URL OPENAI_MODEL AI_ORDER APOLLO_API_KEY LUSHA_API_KEY HUNTER_API_KEY ENRICH_ORDER MS_TENANT_ID MS_CLIENT_ID MS_CLIENT_SECRET MS_SENDER MS_DOMAIN INGEST_KEY; do
             v="${!k}"; if [ -n "$v" ]; then args+=("$k=$v"); fi
           done
           if [ ${#args[@]} -gt 0 ]; then supabase secrets set --project-ref "$PROJECT_REF" "${args[@]}"; fi
